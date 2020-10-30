@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Simple Interactive Example</title>
+    <title>THREE.Interactive Examples</title>
     <meta charset="utf-8" />
     <meta
       name="viewport"
@@ -13,8 +13,13 @@
     <div id="container"></div>
 
     <div id="title">
-      <h1>Simple Interactive Example</h1>
+      <h1>THREE.Interactive Examples</h1>
       <p></p>
+
+      <ul>
+        <li><a href="./simple.html">Simple</a></li>
+        <li><a href="./depth.html">Depth</a></li>
+      </ul>
     </div>
 
     <div id="info">
@@ -25,92 +30,5 @@
         >Source</a
       >
     </div>
-
-    <script src="https://unpkg.com/stats.js@0.17.0/build/stats.min.js"></script>
-    <script src="https://unpkg.com/three@0.122.0/build/three.js"></script>
-    <script src="../build/three.interactive.js"></script>
-
-    <script>
-      const stats = new Stats();
-      document.body.appendChild(stats.dom);
-
-      const renderer = new THREE.WebGLRenderer({ alpha: true });
-      renderer.setPixelRatio(window.devicePixelRatio);
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      document.getElementById('container').appendChild(renderer.domElement);
-
-      const scene = new THREE.Scene();
-
-      const camera = new THREE.PerspectiveCamera(
-        45,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        1000
-      );
-      camera.position.set(0.0, 0.0, 10.0);
-
-      const interactionManager = new THREE.InteractionManager(
-        renderer,
-        camera,
-        renderer.domElement
-      );
-
-      const geometry = new THREE.BoxGeometry(1, 1, 1);
-      const material = new THREE.MeshBasicMaterial({ color: 0x000000 });
-
-      const cube = new THREE.Mesh(geometry, material);
-      cube.addEventListener('mouseover', (event) => {
-        console.log(event);
-
-        event.target.material.color.set(0xff0000);
-
-        document.body.style.cursor = 'pointer';
-      });
-      cube.addEventListener('mouseout', (event) => {
-        console.log(event);
-
-        event.target.material.color.set(0x000000);
-
-        document.body.style.cursor = 'default';
-      });
-      cube.addEventListener('mousedown', (event) => {
-        console.log(event);
-
-        event.target.scale.set(1.5, 1.5, 1.5);
-      });
-      cube.addEventListener('mouseup', (event) => {
-        console.log(event);
-
-        event.target.scale.set(1, 1, 1);
-      });
-      cube.addEventListener('click', (event) => {
-        console.log(event);
-
-        alert('click');
-      });
-      scene.add(cube);
-      interactionManager.add(cube);
-
-      const animate = (time) => {
-        requestAnimationFrame(animate);
-
-        interactionManager.update();
-
-        renderer.render(scene, camera);
-
-        stats.update();
-      };
-
-      animate();
-
-      window.addEventListener('resize', handleWindowResize, false);
-
-      function handleWindowResize() {
-        camera.aspect = window.innerWidth / window.innerHeight;
-        camera.updateProjectionMatrix();
-
-        renderer.setSize(window.innerWidth, window.innerHeight);
-      }
-    </script>
   </body>
 </html>

@@ -40,18 +40,35 @@ h1 {
 
 #title {
   position: absolute;
-  left: 110px;
-  top: 25px;
+  left: 25px;
+  top: 20px;
 }
 
+#title p {
+  max-width: 350px;
+}
+
+#title .log {
+  font-size: 12px;
+}
 
 #info {
   z-index: 1;
   position: absolute;
-  left: 110px;
+  left: 25px;
   bottom: 40px;
 }
 
 a {
   color: #333;
+}
+
+ul {
+	margin: 30px 0px;
+	padding: 0px;
+  line-height: 1.5em;
+}
+
+ul li {
+  list-style-type: none;
 }
