@@ -29,7 +29,7 @@
       container.setAttribute('id', 'container');
       document.body.appendChild(container);
 
-      const renderer = new THREE.WebGLRenderer();
+      const renderer = new THREE.WebGLRenderer({ alpha: true });
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(window.innerWidth, window.innerHeight);
       container.appendChild(renderer.domElement);
@@ -80,11 +80,7 @@
       window.addEventListener('resize', handleWindowResize, false);
 
       function handleWindowResize() {
-        camera.left = window.innerWidth / -2;
-        camera.right = window.innerWidth / 2;
-        camera.top = window.innerHeight / 2;
-        camera.bottom = window.innerHeight / -2;
-
+        camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
 
         renderer.setSize(window.innerWidth, window.innerHeight);
