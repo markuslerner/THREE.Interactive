@@ -34,14 +34,10 @@
       const stats = new Stats();
       document.body.appendChild(stats.dom);
 
-      const container = document.createElement('div');
-      container.setAttribute('id', 'container');
-      document.body.appendChild(container);
-
       const renderer = new THREE.WebGLRenderer({ alpha: true });
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(window.innerWidth, window.innerHeight);
-      container.appendChild(renderer.domElement);
+      document.getElementById('container').appendChild(renderer.domElement);
 
       const scene = new THREE.Scene();
 
@@ -60,16 +56,37 @@
       );
 
       const geometry = new THREE.BoxGeometry(1, 1, 1);
-      const material = new THREE.MeshBasicMaterial();
+      const material = new THREE.MeshBasicMaterial({ color: 0x000000 });
 
       const cube = new THREE.Mesh(geometry, material);
       cube.addEventListener('mouseover', (event) => {
         console.log(event);
+
+        event.target.material.color.set(0xff0000);
+
         document.body.style.cursor = 'pointer';
       });
       cube.addEventListener('mouseout', (event) => {
         console.log(event);
+
+        event.target.material.color.set(0x000000);
+
         document.body.style.cursor = 'default';
+      });
+      cube.addEventListener('mousedown', (event) => {
+        console.log(event);
+
+        event.target.scale.set(1.5, 1.5, 1.5);
+      });
+      cube.addEventListener('mouseup', (event) => {
+        console.log(event);
+
+        event.target.scale.set(1, 1, 1);
+      });
+      cube.addEventListener('click', (event) => {
+        console.log(event);
+
+        alert('click');
       });
       scene.add(cube);
       interactionManager.add(cube);
