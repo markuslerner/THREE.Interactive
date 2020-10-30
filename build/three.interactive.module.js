@@ -297,3 +297,4 @@ var InteractionManager = function InteractionManager(renderer, camera, _domEleme
 };
 
 export { InteractionManager, InteractiveEvent, InteractiveObject };
+//# sourceMappingURL=three.interactive.module.js.map

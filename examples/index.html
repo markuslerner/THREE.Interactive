@@ -17,27 +17,11 @@
 
 		<div id="info"><a href="https://github.com/markuslerner/THREE.Interactive" target="_blank" rel="noopener">Source</a></div>
 
-    <script src="https://unpkg.com/three@0.122.0/build/three.module.js" type="module"></script>
-
     <script src="https://unpkg.com/stats.js@0.17.0/build/stats.min.js"></script>
-
     <script src="https://unpkg.com/three@0.122.0/build/three.js"></script>
-
     <script src="../build/three.interactive.js"></script>
-    <!-- <script src="https://unpkg.com/three.interaction@0.2.3/build/three.interaction.js"></script> -->
 
     <script>
-      // import * as THREE from 'https://unpkg.com/three@0.122.0/build/three.module.js';
-      //
-      // import Stats from 'https://unpkg.com/stats.js@0.17.0/src/Stats.js';
-      //
-      // import { InteractionManager } from '../dist/three-interactive.module.js';
-
-      // import { threeToCannon } from 'https://unpkg.com/three-to-cannon@3.0.2/dist/three-to-cannon.module.js';
-
-      console.log(THREE);
-      console.log(THREE.InteractionManager);
-
       const stats = new Stats();
       document.body.appendChild(stats.dom);
 
@@ -60,13 +44,11 @@
       );
       camera.position.set(0.0, 0.0, 10.0);
 
-      // console.log(THREE.InteractionManager);
-
-      // const interactionManager = new threeInteractive.InteractionManager(
-      //   renderer,
-      //   camera,
-      //   renderer.domElement
-      // );
+      const interactionManager = new THREE.InteractionManager(
+        renderer,
+        camera,
+        renderer.domElement
+      );
 
       const geometry = new THREE.BoxGeometry(1, 1, 1);
       const material = new THREE.MeshBasicMaterial();
@@ -81,12 +63,12 @@
         document.body.style.cursor = 'default';
       });
       scene.add(cube);
-      // interactionManager.add(cube);
+      interactionManager.add(cube);
 
       const animate = (time) => {
         requestAnimationFrame(animate);
 
-        // interactionManager.update();
+        interactionManager.update();
 
         renderer.render(scene, camera);
 

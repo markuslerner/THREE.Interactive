@@ -1,7 +1,7 @@
 (function (global, factory) {
   typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports, require('three')) :
   typeof define === 'function' && define.amd ? define(['exports', 'three'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.THREE = {}, global.three));
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, factory(global.THREE = global.THREE || {}, global.THREE));
 }(this, (function (exports, three) { 'use strict';
 
   function _classCallCheck(instance, Constructor) {
@@ -307,3 +307,4 @@
   Object.defineProperty(exports, '__esModule', { value: true });
 
 })));
+//# sourceMappingURL=three.interactive.js.map
