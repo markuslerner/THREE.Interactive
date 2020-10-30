@@ -1,4 +1,4 @@
-import * as THREE from 'three';
+import { Raycaster, Vector2 } from 'three';
 
 export class InteractiveObject {
   constructor(target, name) {
@@ -20,17 +20,17 @@ export class InteractiveEvent {
   }
 }
 
-export default class InteractionManager {
+export class InteractionManager {
   constructor(renderer, camera, domElement) {
     this.renderer = renderer;
     this.camera = camera;
     this.domElement = domElement;
 
-    this.mouse = new THREE.Vector2();
+    this.mouse = new Vector2();
 
     this.interactiveObjects = [];
 
-    this.raycaster = new THREE.Raycaster();
+    this.raycaster = new Raycaster();
 
     domElement.addEventListener('mousemove', this.onDocumentMouseMove, false);
     domElement.addEventListener('click', this.onDocumentMouseClick, false);

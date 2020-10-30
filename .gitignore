@@ -53,6 +53,3 @@ coverage
 
 # Dependency directory
 node_modules
-
-# Dist folder
-dist

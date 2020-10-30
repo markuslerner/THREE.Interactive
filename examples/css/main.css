@@ -1,0 +1,57 @@
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow: hidden;
+  font-family: Helvetica, Arial, sans-serif;
+  width: 100%;
+  height: 100% ;
+  background-color: #dedede;
+  color: #202020;
+  padding: 20px;
+  text-shadow: 0 1px 0 rgba(255,255,255,.5);
+}
+
+#container {
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px solid transparent;
+  background-color: #fff;
+  background-image: linear-gradient(#ccc 1px, transparent 1px),linear-gradient(90deg, #ccc 1px, transparent 1px),linear-gradient(rgba(0,0,0,.1) 1px, transparent 1px),linear-gradient(90deg, rgba(0,0,0,.1) 1px, transparent 1px);
+  background-size: 100px 100px, 100px 100px, 10px 10px, 10px 10px;
+  background-position:
+    calc(50vw - 0px) calc(50vh - 1px),
+    calc(50vw - 0px) calc(50vh - 1px),
+    calc(50vw - 0px) calc(50vh - 1px),
+    calc(50vw - 0px) calc(50vh - 1px);
+}
+
+h1 {
+  font-weight: 300; font-size: 24px; margin-bottom: .5em;
+}
+
+#title {
+  position: absolute;
+  left: 110px;
+  top: 25px;
+}
+
+
+#info {
+  z-index: 1;
+  position: absolute;
+  left: 110px;
+  bottom: 40px;
+}
+
+a {
+  color: #333;
+}
