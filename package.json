@@ -8,8 +8,8 @@
   "unpkg": "dist/three-interactive.umd.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "microbundle --globals three=THREE --external three",
-    "dev": "microbundle watch --globals three=THREE --external three"
+    "build": "microbundle --name THREE --globals three=THREE --external three",
+    "dev": "microbundle watch --name THREE --globals three=THREE --external three"
   },
   "repository": {
     "type": "git",

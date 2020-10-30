@@ -24,6 +24,7 @@
     <script src="https://unpkg.com/three@0.122.0/build/three.js"></script>
 
     <script src="../dist/three-interactive.umd.js"></script>
+    <!-- <script src="https://unpkg.com/three.interaction@0.2.3/build/three.interaction.js"></script> -->
 
     <script>
       // import * as THREE from 'https://unpkg.com/three@0.122.0/build/three.module.js';
@@ -56,11 +57,13 @@
       );
       camera.position.set(0.0, 0.0, 10.0);
 
-      const interactionManager = new threeInteractive.InteractionManager(
-        renderer,
-        camera,
-        renderer.domElement
-      );
+      console.log(THREE.InteractionManager);
+
+      // const interactionManager = new threeInteractive.InteractionManager(
+      //   renderer,
+      //   camera,
+      //   renderer.domElement
+      // );
 
       const geometry = new THREE.BoxGeometry(1, 1, 1);
       const material = new THREE.MeshBasicMaterial();
@@ -75,12 +78,12 @@
         document.body.style.cursor = 'default';
       });
       scene.add(cube);
-      interactionManager.add(cube);
+      // interactionManager.add(cube);
 
       const animate = (time) => {
         requestAnimationFrame(animate);
 
-        interactionManager.update();
+        // interactionManager.update();
 
         renderer.render(scene, camera);
 
