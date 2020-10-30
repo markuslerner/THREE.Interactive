@@ -32,18 +32,23 @@ export class InteractionManager {
 
     this.raycaster = new Raycaster();
 
-    domElement.addEventListener('mousemove', this.onDocumentMouseMove, false);
-    domElement.addEventListener('click', this.onDocumentMouseClick, false);
-    domElement.addEventListener('mousedown', this.onDocumentMouseDown, false);
+    domElement.addEventListener('mousemove', this.onDocumentMouseMove);
+    domElement.addEventListener('click', this.onDocumentMouseClick);
+    domElement.addEventListener('mousedown', this.onDocumentMouseDown);
     domElement.ownerDocument.addEventListener(
       'mouseup',
-      this.onDocumentMouseUp,
-      false
+      this.onDocumentMouseUp
     );
 
-    domElement.addEventListener('touchstart', this.onDocumentTouchStart, false);
-    domElement.addEventListener('touchmove', this.onDocumentTouchMove, false);
-    domElement.addEventListener('touchend', this.onDocumentTouchEnd, false);
+    domElement.addEventListener('touchstart', this.onDocumentTouchStart, {
+      passive: true,
+    });
+    domElement.addEventListener('touchmove', this.onDocumentTouchMove, {
+      passive: true,
+    });
+    domElement.addEventListener('touchend', this.onDocumentTouchEnd, {
+      passive: true,
+    });
 
     this.treatTouchEventsAsMouseEvents = true;
   }

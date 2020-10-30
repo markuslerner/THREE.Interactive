@@ -279,19 +279,25 @@ var InteractionManager = function InteractionManager(renderer, camera, _domEleme
   this.interactiveObjects = [];
   this.raycaster = new Raycaster();
 
-  _domElement.addEventListener('mousemove', this.onDocumentMouseMove, false);
+  _domElement.addEventListener('mousemove', this.onDocumentMouseMove);
 
-  _domElement.addEventListener('click', this.onDocumentMouseClick, false);
+  _domElement.addEventListener('click', this.onDocumentMouseClick);
 
-  _domElement.addEventListener('mousedown', this.onDocumentMouseDown, false);
+  _domElement.addEventListener('mousedown', this.onDocumentMouseDown);
 
-  _domElement.ownerDocument.addEventListener('mouseup', this.onDocumentMouseUp, false);
+  _domElement.ownerDocument.addEventListener('mouseup', this.onDocumentMouseUp);
 
-  _domElement.addEventListener('touchstart', this.onDocumentTouchStart, false);
+  _domElement.addEventListener('touchstart', this.onDocumentTouchStart, {
+    passive: true
+  });
 
-  _domElement.addEventListener('touchmove', this.onDocumentTouchMove, false);
+  _domElement.addEventListener('touchmove', this.onDocumentTouchMove, {
+    passive: true
+  });
 
-  _domElement.addEventListener('touchend', this.onDocumentTouchEnd, false);
+  _domElement.addEventListener('touchend', this.onDocumentTouchEnd, {
+    passive: true
+  });
 
   this.treatTouchEventsAsMouseEvents = true;
 };
