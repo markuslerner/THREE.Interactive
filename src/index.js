@@ -26,7 +26,7 @@ export class InteractionManager {
     this.camera = camera;
     this.domElement = domElement;
 
-    this.mouse = new Vector2();
+    this.mouse = new Vector2(-1, 1); // top left default position
 
     this.interactiveObjects = [];
 

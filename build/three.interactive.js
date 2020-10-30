@@ -279,7 +279,8 @@
     this.renderer = renderer;
     this.camera = camera;
     this.domElement = _domElement;
-    this.mouse = new three.Vector2();
+    this.mouse = new three.Vector2(-1, 1); // top left default position
+
     this.interactiveObjects = [];
     this.raycaster = new three.Raycaster();
 

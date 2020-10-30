@@ -275,7 +275,8 @@ var InteractionManager = function InteractionManager(renderer, camera, _domEleme
   this.renderer = renderer;
   this.camera = camera;
   this.domElement = _domElement;
-  this.mouse = new Vector2();
+  this.mouse = new Vector2(-1, 1); // top left default position
+
   this.interactiveObjects = [];
   this.raycaster = new Raycaster();
 
