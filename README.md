@@ -2,7 +2,9 @@
 
 [![NPM Package](https://img.shields.io/npm/v/three.interactive.svg?style=flat)](https://www.npmjs.com/package/three.interactive)
 
-Fast and simple interaction manager for [THREE.js](https://github.com/mrdoob/three.js/) for enabling mouse and touch events on 3D objects
+Fast and simple interaction manager for [THREE.js](https://github.com/mrdoob/three.js/) for enabling mouse and touch events on 3D objects.
+
+Alternative to [three.interaction](https://github.com/jasonChen1982/three.interaction.js).
 
 
 ### Examples ####
