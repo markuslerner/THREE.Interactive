@@ -2,14 +2,12 @@
   "name": "three.interactive",
   "version": "1.0.0",
   "description": "Fast and simple interaction manager for THREE.js",
-  "source": "src/index.js",
-  "main": "dist/three-interactive.js",
-  "module": "dist/three-interactive.module.js",
-  "unpkg": "dist/three-interactive.umd.js",
+  "main": "./build/three.interactive.js",
+  "module": "./build/three.interactive.module.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "microbundle --name THREE --globals three=THREE --external three",
-    "dev": "microbundle watch --name THREE --globals three=THREE --external three"
+    "build": "rollup -c",
+    "dev": "rollup -c -w"
   },
   "repository": {
     "type": "git",
@@ -38,9 +36,16 @@
     "three": "^0.122.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.12.3",
+    "@babel/plugin-external-helpers": "^7.12.1",
+    "@babel/plugin-proposal-class-properties": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "babel-core": "^6.26.3",
     "babel-eslint": "^10.1.0",
     "eslint": "^7.12.1",
     "eslint-plugin-babel": "^5.3.1",
-    "microbundle": "^0.12.4"
+    "microbundle": "^0.12.4",
+    "rollup": "^2.32.1",
+    "rollup-plugin-babel": "^4.4.0"
   }
 }

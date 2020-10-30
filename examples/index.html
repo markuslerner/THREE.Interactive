@@ -23,7 +23,7 @@
 
     <script src="https://unpkg.com/three@0.122.0/build/three.js"></script>
 
-    <script src="../dist/three-interactive.umd.js"></script>
+    <script src="../build/three.interactive.js"></script>
     <!-- <script src="https://unpkg.com/three.interaction@0.2.3/build/three.interaction.js"></script> -->
 
     <script>
@@ -34,6 +34,9 @@
       // import { InteractionManager } from '../dist/three-interactive.module.js';
 
       // import { threeToCannon } from 'https://unpkg.com/three-to-cannon@3.0.2/dist/three-to-cannon.module.js';
+
+      console.log(THREE);
+      console.log(THREE.InteractionManager);
 
       const stats = new Stats();
       document.body.appendChild(stats.dom);
@@ -57,7 +60,7 @@
       );
       camera.position.set(0.0, 0.0, 10.0);
 
-      console.log(THREE.InteractionManager);
+      // console.log(THREE.InteractionManager);
 
       // const interactionManager = new threeInteractive.InteractionManager(
       //   renderer,
