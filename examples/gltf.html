@@ -55,7 +55,7 @@
       stats.dom.style.bottom = '0';
       document.body.appendChild(stats.dom);
 
-      const renderer = new THREE.WebGLRenderer({ alpha: true });
+      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -183,6 +183,7 @@
 
             child.addEventListener('click', (event) => {
               console.log(event);
+              console.log(event.target.name);
               event.stopPropagation();
 
               if (child.material) {
