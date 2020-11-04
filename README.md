@@ -4,22 +4,51 @@
 
 Fast and simple interaction manager for [THREE.js](https://github.com/mrdoob/three.js/) for enabling mouse and touch events on 3D objects.
 
-Alternative to [three.interaction](https://github.com/jasonChen1982/three.interaction.js).
+Alternative to [three.interaction](https://github.com/jasonChen1982/three.interaction.js). I figured out that in some cases, the performance is better when using three.interactive instead of three.interaction.
+
+Collaborations and improvements are welcome.
 
 
 ### Examples ####
 
 * [Demo](https://www.markuslerner.com/github/three.interactive/examples/index.html): Showcase of most of the features
 
+
 ### Usage ####
 
-* Include script
-* Create an InteractionManager instance
-* Call InteractionManager.update() on each render
-* Add objects to InteractionManager
+1. Include script:
 
 ```
-import { InteractionManager } from "three.interaction";
+import { InteractionManager } from "three.interactive";
+```
+
+2. Create an InteractionManager instance
+
+```
+const interactionManager = new InteractionManager(
+  renderer,
+  camera,
+  renderer.domElement
+);
+```
+
+3. Add objects to InteractionManager
+
+```
+interactionManager.add(cube);
+```
+
+4. Call InteractionManager.update() on each render
+
+```
+interactionManager.update();
+```
+
+
+### Simple example ####
+
+```
+import { InteractionManager } from "three.interactive";
 
 const container = document.createElement("div");
 container.setAttribute("id", "container");
@@ -44,54 +73,75 @@ const interactionManager = new InteractionManager(
 const geometry = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshBasicMaterial();
 
-const cube = new Mesh(geometry, material);
+const cube = new THREE.Mesh(geometry, material);
 cube.addEventListener("mouseover", (event) => {
-  console.log(event);
+  event.target.material.color.set(0xff0000);
   document.body.style.cursor = "pointer";
 });
 cube.addEventListener("mouseout", (event) => {
-  console.log(event);
+  event.target.material.color.set(0xffffff);
   document.body.style.cursor = "default";
+});
+cube.addEventListener("mousedown", (event) => {
+  event.target.scale.set(1.1, 1.1, 1.1);
+});
+cube.addEventListener("click", (event) => {
+  event.target.scale.set(1.0, 1.0, 1.0);
 });
 scene.add(cube);
 interactionManager.add(cube);
 
-animate = (time) => {
+const animate = (time) => {
   requestAnimationFrame(animate);
 
   interactionManager.update();
 
   renderer.render(scene, camera);
 };
+
+animate();
 ```
 
+### API ###
 
-#### Including the script ####
+#### InteractionManager class ####
 
-Include script after THREE is included:
 
-```js
-<script src="src/BlurredLine.js"></script>
-```
+```new InteractionManager(renderer, camera, renderer.domElement)``` – constructor InteractionManager instance
 
-or include directly from unpkg.com:
+**Methods:**
 
-```js
-<script src="https://unpkg.com/three.blurredline@1.0.0/src/BlurredLine.js"></script>
-```
+```interactionManager.add(object, childNames = [])``` – add object(s), optionally select only child objects by names
 
-or use npm to install it:
+```interactionManager.remove(object, childNames = [])``` – remove object(s)
 
-```
-npm i three.interactive
-```
+```interactionManager.update()``` – update InteractionManager on each render
 
-and include it in your code:
-```js
-import * as THREE from 'three';
-import { InteractionManager } from 'three.interactive';
-```
+```interactionManager.dispose()``` – dispose InteractionManager
 
+
+#### InteractiveEvent class ####
+
+**Members:**
+
+```cancelBubble``` (boolean) – wether events should continue to bubble
+
+```coords``` (THREE.Vector2) – Mouse/touch coords
+
+```distance``` (number) – Distance of intersected point from camera
+
+```intersected``` (boolean) – Whether object is still intersected
+
+```originalEvent``` (Event object) – Original event, if available (mouse, touch)
+
+```target``` (THREE.Object3D) – Target object
+
+```type``` (string) – event type
+
+
+**Methods:**
+
+```stopPropagation``` – stop bubbling of event
 
 
 #### License ####
