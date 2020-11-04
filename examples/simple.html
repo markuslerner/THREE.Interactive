@@ -84,12 +84,18 @@
       cube.addEventListener('mousedown', (event) => {
         console.log(event);
 
-        event.target.scale.set(1.1, 1.1, 1.1);
+        event.target.material.color.set(0x0000ff);
+
       });
       cube.addEventListener('mouseup', (event) => {
         console.log(event);
 
-        event.target.scale.set(1, 1, 1);
+        if(event.intersected) {
+          event.target.material.color.set(0xff0000);
+        } else {
+          event.target.material.color.set(0x000000);
+        }
+
       });
       cube.addEventListener('click', (event) => {
         console.log(event);
