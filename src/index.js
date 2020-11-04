@@ -67,38 +67,38 @@ export class InteractionManager {
     domElement.removeEventListener('touchend', this.onDocumentTouchEnd);
   };
 
-  add = (model, names = []) => {
-    if (names.length > 0) {
-      names.forEach((name) => {
-        const modelObject = model.getObjectByName(name);
-        if (modelObject) {
-          const interactiveObject = new InteractiveObject(modelObject, name);
-          this.interactiveObjects.push(interactiveObject);
-        }
-      });
-    } else {
-      if (model) {
-        const interactiveObject = new InteractiveObject(model, model.name);
+  add = (object, childNames = []) => {
+    if (object) {
+      if (childNames.length > 0) {
+        childNames.forEach((name) => {
+          const o = object.getObjectByName(name);
+          if (o) {
+            const interactiveObject = new InteractiveObject(o, name);
+            this.interactiveObjects.push(interactiveObject);
+          }
+        });
+      } else {
+        const interactiveObject = new InteractiveObject(object, object.name);
         this.interactiveObjects.push(interactiveObject);
       }
     }
   };
 
-  remove = (model, names = []) => {
-    if (names.length > 0) {
-      const interactiveObjectsNew = [];
-      this.interactiveObjects.forEach((object) => {
-        if (!names.includes(object.name)) {
-          interactiveObjectsNew.push(object);
-        }
-      });
-      this.interactiveObjects = interactiveObjectsNew;
-    } else {
-      if (model) {
+  remove = (object, childNames = []) => {
+    if (object) {
+      if (childNames.length > 0) {
         const interactiveObjectsNew = [];
-        this.interactiveObjects.forEach((object) => {
-          if (object.name !== model.name) {
-            interactiveObjectsNew.push(object);
+        this.interactiveObjects.forEach((o) => {
+          if (!childNames.includes(o.name)) {
+            interactiveObjectsNew.push(o);
+          }
+        });
+        this.interactiveObjects = interactiveObjectsNew;
+      } else {
+        const interactiveObjectsNew = [];
+        this.interactiveObjects.forEach((o) => {
+          if (o.name !== object.name) {
+            interactiveObjectsNew.push(o);
           }
         });
         this.interactiveObjects = interactiveObjectsNew;

@@ -69,48 +69,48 @@
       domElement.removeEventListener('touchend', _this.onDocumentTouchEnd);
     };
 
-    this.add = function (model) {
-      var names = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+    this.add = function (object) {
+      var childNames = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
-      if (names.length > 0) {
-        names.forEach(function (name) {
-          var modelObject = model.getObjectByName(name);
+      if (object) {
+        if (childNames.length > 0) {
+          childNames.forEach(function (name) {
+            var o = object.getObjectByName(name);
 
-          if (modelObject) {
-            var interactiveObject = new InteractiveObject(modelObject, name);
+            if (o) {
+              var interactiveObject = new InteractiveObject(o, name);
 
-            _this.interactiveObjects.push(interactiveObject);
-          }
-        });
-      } else {
-        if (model) {
-          var interactiveObject = new InteractiveObject(model, model.name);
+              _this.interactiveObjects.push(interactiveObject);
+            }
+          });
+        } else {
+          var interactiveObject = new InteractiveObject(object, object.name);
 
           _this.interactiveObjects.push(interactiveObject);
         }
       }
     };
 
-    this.remove = function (model) {
-      var names = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
+    this.remove = function (object) {
+      var childNames = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
 
-      if (names.length > 0) {
-        var interactiveObjectsNew = [];
+      if (object) {
+        if (childNames.length > 0) {
+          var interactiveObjectsNew = [];
 
-        _this.interactiveObjects.forEach(function (object) {
-          if (!names.includes(object.name)) {
-            interactiveObjectsNew.push(object);
-          }
-        });
+          _this.interactiveObjects.forEach(function (o) {
+            if (!childNames.includes(o.name)) {
+              interactiveObjectsNew.push(o);
+            }
+          });
 
-        _this.interactiveObjects = interactiveObjectsNew;
-      } else {
-        if (model) {
+          _this.interactiveObjects = interactiveObjectsNew;
+        } else {
           var _interactiveObjectsNew = [];
 
-          _this.interactiveObjects.forEach(function (object) {
-            if (object.name !== model.name) {
-              _interactiveObjectsNew.push(object);
+          _this.interactiveObjects.forEach(function (o) {
+            if (o.name !== object.name) {
+              _interactiveObjectsNew.push(o);
             }
           });
 
