@@ -48,6 +48,7 @@ interactionManager.update();
 ### Simple example ####
 
 ```
+import * as THREE from "three";
 import { InteractionManager } from "three.interactive";
 
 const container = document.createElement("div");
