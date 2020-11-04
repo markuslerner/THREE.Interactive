@@ -13,8 +13,9 @@ Collaborations and improvements are welcome.
 
 ### Examples ####
 
-* [Demo](https://www.markuslerner.com/github/three.interactive/examples/index.html): Showcase of most of the features
-
+* [Simple](https://www.markuslerner.com/github/three.interactive/examples/simple.html): Basic example
+* [Depth](https://www.markuslerner.com/github/three.interactive/examples/depth.html): Overlapping objects example
+* [glTF](https://www.markuslerner.com/github/three.interactive/examples/gltf.html): Hover/click gltf objects example
 
 ### Usage ####
 
