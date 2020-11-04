@@ -1,6 +1,6 @@
 {
   "name": "three.interactive",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Fast and simple interaction manager for THREE.js",
   "main": "./build/three.interactive.js",
   "module": "./build/three.interactive.module.js",
@@ -24,7 +24,8 @@
   "files": [
     "LICENSE",
     "README.md",
-    "src/index.js"
+    "build",
+    "src"
   ],
   "author": "Markus Lerner <m@markuslerner.com> (https://www.markuslerner.com)",
   "license": "MIT",
