@@ -38,6 +38,8 @@
       >
     </div>
 
+    <div id="progress-bar"></div>
+
     <script src="https://unpkg.com/stats.js@0.17.0/build/stats.min.js"></script>
     <script src="https://unpkg.com/three@0.122.0/build/three.js"></script>
     <script src="https://unpkg.com/three@0.122.0/examples/js/controls/OrbitControls.js"></script>
@@ -79,6 +81,21 @@
       controls.target.set(0, 0, 0);
       controls.update();
 
+      const loadingManager = new THREE.LoadingManager();
+      const progressBar = document.getElementById('progress-bar');
+      if (progressBar) {
+        loadingManager.onProgress = function (item, loaded, total) {
+          progressBar.style.width = (loaded / total) * 100 + '%';
+        };
+
+        loadingManager.onLoad = function () {
+          progressBar.style.width = '100%';
+          setTimeout(() => {
+            progressBar.style.display = 'none';
+          }, 500);
+        };
+      }
+
       const pmremGenerator = new THREE.PMREMGenerator(renderer);
       pmremGenerator.compileEquirectangularShader();
 
@@ -91,6 +108,8 @@
           texture.dispose();
         });
 
+      rgbeLoader.manager = loadingManager;
+
       const interactionManager = new THREE.InteractionManager(
         renderer,
         camera,
@@ -100,6 +119,7 @@
       const logDiv = document.querySelector('#title .log');
 
       const loader = new THREE.GLTFLoader();
+      loader.manager = loadingManager;
       loader.load('models/microphone_gxl_066_bafhcteks/scene.gltf', function (
         gltf
       ) {
@@ -129,7 +149,8 @@
               document.body.style.cursor = 'pointer';
 
               const path = getPath(event.target);
-              logDiv.innerHTML = '<span style="color: #ff0000">' + path + ' – mouseover</span>';
+              logDiv.innerHTML =
+                '<span style="color: #ff0000">' + path + ' – mouseover</span>';
 
               if (child.material) {
                 child.userData.materialEmissiveHex = child.material.emissive.getHex();
@@ -169,7 +190,8 @@
               }
 
               const path = getPath(event.target);
-              logDiv.innerHTML = '<span style="color: #0000ff">' + path + ' – click</span>';
+              logDiv.innerHTML =
+                '<span style="color: #0000ff">' + path + ' – click</span>';
             });
           }
         });
