@@ -35,13 +35,20 @@ const interactionManager = new InteractionManager(
 );
 ```
 
-3. Add objects to InteractionManager
+3. Add object to InteractionManager
 
 ```
 interactionManager.add(cube);
 ```
 
-4. Call InteractionManager.update() on each render
+4. Add event listener to object
+
+```
+cube.addEventListener("click", (event) => {
+});
+```
+
+5. Call InteractionManager.update() on each render
 
 ```
 interactionManager.update();
@@ -113,6 +120,11 @@ animate();
 
 ```new InteractionManager(renderer, camera, renderer.domElement)``` – constructor InteractionManager instance
 
+**Members:**
+
+```treatTouchEventsAsMouseEvents``` (boolean) – wether touch events should fire as mouse events, default: true
+
+
 **Methods:**
 
 ```interactionManager.add(object, childNames = [])``` – add object(s), optionally select only child objects by names
@@ -126,9 +138,10 @@ animate();
 
 #### InteractiveEvent class ####
 
+
 **Members:**
 
-```cancelBubble``` (boolean) – wether events should continue to bubble
+```cancelBubble``` (boolean) – wether events should continue to bubble, default: false
 
 ```coords``` (THREE.Vector2) – Mouse/touch coords
 
@@ -140,12 +153,12 @@ animate();
 
 ```target``` (THREE.Object3D) – Target object
 
-```type``` (string) – event type
+```type``` (string) – event type: 'click', 'mousedown', 'mousemove', 'mouseup', 'touchstart', 'touchmove', 'touchend'
 
 
 **Methods:**
 
-```stopPropagation``` – stop bubbling of event, e.g. when only the object closest to the camera is supposed to fire an event
+```stopPropagation``` – stop bubbling of event (cancelBubble), e.g. when only the object closest to the camera is supposed to fire an event
 
 
 #### License ####
