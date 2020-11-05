@@ -13,9 +13,9 @@ Collaborations and improvements are welcome.
 
 ### Examples ####
 
-* [Simple](https://www.markuslerner.com/github/three.interactive/examples/simple.html): Basic example
-* [Depth](https://www.markuslerner.com/github/three.interactive/examples/depth.html): Overlapping objects example
-* [glTF](https://www.markuslerner.com/github/three.interactive/examples/gltf.html): Hover/click gltf objects example
+* [Simple](https://dev.markuslerner.com/three.interactive/examples/simple.html): Basic example
+* [Depth](https://dev.markuslerner.com/three.interactive/examples/depth.html): Overlapping objects example
+* [glTF](https://dev.markuslerner.com/three.interactive/examples/gltf.html): Hover/click gltf objects example
 
 ### Usage ####
 
