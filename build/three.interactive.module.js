@@ -56,13 +56,20 @@ var InteractionManager = function InteractionManager(renderer, camera, _domEleme
   _classCallCheck(this, InteractionManager);
 
   this.dispose = function () {
-    domElement.removeEventListener('mousemove', _this.onDocumentMouseMove);
-    domElement.removeEventListener('click', _this.onDocumentMouseClick);
-    domElement.removeEventListener('mousedown', _this.onDocumentMouseDown);
-    domElement.ownerDocument.removeEventListener('mouseup', _this.onDocumentMouseUp);
-    domElement.removeEventListener('touchstart', _this.onDocumentTouchStart);
-    domElement.removeEventListener('touchmove', _this.onDocumentTouchMove);
-    domElement.removeEventListener('touchend', _this.onDocumentTouchEnd);
+    domElement.removeEventListener('click', _this.onMouseClick);
+
+    if (_this.supportsPointerEvents) {
+      domElement.ownerDocument.removeEventListener('pointermove', _this.onDocumentMouseMove);
+      domElement.removeEventListener('pointerdown', _this.onMouseDown);
+      domElement.removeEventListener('pointerup', _this.onMouseUp);
+    } else {
+      domElement.ownerDocument.removeEventListener('mousemove', _this.onDocumentMouseMove);
+      domElement.removeEventListener('mousedown', _this.onMouseDown);
+      domElement.removeEventListener('mouseup', _this.onMouseUp);
+      domElement.removeEventListener('touchstart', _this.onTouchStart);
+      domElement.removeEventListener('touchmove', _this.onTouchMove);
+      domElement.removeEventListener('touchend', _this.onTouchEnd);
+    }
   };
 
   this.add = function (object) {
@@ -174,7 +181,7 @@ var InteractionManager = function InteractionManager(renderer, camera, _domEleme
     });
   };
 
-  this.onDocumentTouchMove = function (touchEvent) {
+  this.onTouchMove = function (touchEvent) {
     // event.preventDefault();
     _this.mapPositionToPoint(_this.mouse, touchEvent.touches[0].clientX, touchEvent.touches[0].clientY);
 
@@ -185,7 +192,7 @@ var InteractionManager = function InteractionManager(renderer, camera, _domEleme
     });
   };
 
-  this.onDocumentMouseClick = function (mouseEvent) {
+  this.onMouseClick = function (mouseEvent) {
     _this.update();
 
     var event = new InteractiveEvent('click', mouseEvent);
@@ -197,7 +204,9 @@ var InteractionManager = function InteractionManager(renderer, camera, _domEleme
     });
   };
 
-  this.onDocumentMouseDown = function (mouseEvent) {
+  this.onMouseDown = function (mouseEvent) {
+    _this.mapPositionToPoint(_this.mouse, mouseEvent.clientX, mouseEvent.clientY);
+
     _this.update();
 
     var event = new InteractiveEvent('mousedown', mouseEvent);
@@ -209,7 +218,7 @@ var InteractionManager = function InteractionManager(renderer, camera, _domEleme
     });
   };
 
-  this.onDocumentTouchStart = function (touchEvent) {
+  this.onTouchStart = function (touchEvent) {
     _this.mapPositionToPoint(_this.mouse, touchEvent.touches[0].clientX, touchEvent.touches[0].clientY);
 
     _this.update();
@@ -223,7 +232,7 @@ var InteractionManager = function InteractionManager(renderer, camera, _domEleme
     });
   };
 
-  this.onDocumentMouseUp = function (mouseEvent) {
+  this.onMouseUp = function (mouseEvent) {
     var event = new InteractiveEvent('mouseup', mouseEvent);
 
     _this.interactiveObjects.forEach(function (object) {
@@ -231,7 +240,7 @@ var InteractionManager = function InteractionManager(renderer, camera, _domEleme
     });
   };
 
-  this.onDocumentTouchEnd = function (touchEvent) {
+  this.onTouchEnd = function (touchEvent) {
     _this.mapPositionToPoint(_this.mouse, touchEvent.touches[0].clientX, touchEvent.touches[0].clientY);
 
     _this.update();
@@ -277,28 +286,37 @@ var InteractionManager = function InteractionManager(renderer, camera, _domEleme
   this.domElement = _domElement;
   this.mouse = new Vector2(-1, 1); // top left default position
 
+  this.supportsPointerEvents = !!window.PointerEvent;
   this.interactiveObjects = [];
   this.raycaster = new Raycaster();
 
-  _domElement.addEventListener('mousemove', this.onDocumentMouseMove);
+  _domElement.addEventListener('click', this.onMouseClick);
 
-  _domElement.addEventListener('click', this.onDocumentMouseClick);
+  if (this.supportsPointerEvents) {
+    _domElement.ownerDocument.addEventListener('pointermove', this.onDocumentMouseMove);
 
-  _domElement.addEventListener('mousedown', this.onDocumentMouseDown);
+    _domElement.addEventListener('pointerdown', this.onMouseDown);
 
-  _domElement.ownerDocument.addEventListener('mouseup', this.onDocumentMouseUp);
+    _domElement.addEventListener('pointerup', this.onMouseUp);
+  } else {
+    _domElement.ownerDocument.addEventListener('mousemove', this.onDocumentMouseMove);
 
-  _domElement.addEventListener('touchstart', this.onDocumentTouchStart, {
-    passive: true
-  });
+    _domElement.addEventListener('mousedown', this.onMouseDown);
 
-  _domElement.addEventListener('touchmove', this.onDocumentTouchMove, {
-    passive: true
-  });
+    _domElement.addEventListener('mouseup', this.onMouseUp);
 
-  _domElement.addEventListener('touchend', this.onDocumentTouchEnd, {
-    passive: true
-  });
+    _domElement.addEventListener('touchstart', this.onTouchStart, {
+      passive: true
+    });
+
+    _domElement.addEventListener('touchmove', this.onTouchMove, {
+      passive: true
+    });
+
+    _domElement.addEventListener('touchend', this.onTouchEnd, {
+      passive: true
+    });
+  }
 
   this.treatTouchEventsAsMouseEvents = true;
 };

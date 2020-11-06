@@ -28,43 +28,63 @@ export class InteractionManager {
 
     this.mouse = new Vector2(-1, 1); // top left default position
 
+    this.supportsPointerEvents = !!window.PointerEvent;
+
     this.interactiveObjects = [];
 
     this.raycaster = new Raycaster();
 
-    domElement.addEventListener('mousemove', this.onDocumentMouseMove);
-    domElement.addEventListener('click', this.onDocumentMouseClick);
-    domElement.addEventListener('mousedown', this.onDocumentMouseDown);
-    domElement.ownerDocument.addEventListener(
-      'mouseup',
-      this.onDocumentMouseUp
-    );
+    domElement.addEventListener('click', this.onMouseClick);
 
-    domElement.addEventListener('touchstart', this.onDocumentTouchStart, {
-      passive: true,
-    });
-    domElement.addEventListener('touchmove', this.onDocumentTouchMove, {
-      passive: true,
-    });
-    domElement.addEventListener('touchend', this.onDocumentTouchEnd, {
-      passive: true,
-    });
+    if (this.supportsPointerEvents) {
+      domElement.ownerDocument.addEventListener(
+        'pointermove',
+        this.onDocumentMouseMove
+      );
+      domElement.addEventListener('pointerdown', this.onMouseDown);
+      domElement.addEventListener('pointerup', this.onMouseUp);
+    } else {
+      domElement.ownerDocument.addEventListener(
+        'mousemove',
+        this.onDocumentMouseMove
+      );
+      domElement.addEventListener('mousedown', this.onMouseDown);
+      domElement.addEventListener('mouseup', this.onMouseUp);
+      domElement.addEventListener('touchstart', this.onTouchStart, {
+        passive: true,
+      });
+      domElement.addEventListener('touchmove', this.onTouchMove, {
+        passive: true,
+      });
+      domElement.addEventListener('touchend', this.onTouchEnd, {
+        passive: true,
+      });
+    }
 
     this.treatTouchEventsAsMouseEvents = true;
   }
 
   dispose = () => {
-    domElement.removeEventListener('mousemove', this.onDocumentMouseMove);
-    domElement.removeEventListener('click', this.onDocumentMouseClick);
-    domElement.removeEventListener('mousedown', this.onDocumentMouseDown);
-    domElement.ownerDocument.removeEventListener(
-      'mouseup',
-      this.onDocumentMouseUp
-    );
+    domElement.removeEventListener('click', this.onMouseClick);
 
-    domElement.removeEventListener('touchstart', this.onDocumentTouchStart);
-    domElement.removeEventListener('touchmove', this.onDocumentTouchMove);
-    domElement.removeEventListener('touchend', this.onDocumentTouchEnd);
+    if (this.supportsPointerEvents) {
+      domElement.ownerDocument.removeEventListener(
+        'pointermove',
+        this.onDocumentMouseMove
+      );
+      domElement.removeEventListener('pointerdown', this.onMouseDown);
+      domElement.removeEventListener('pointerup', this.onMouseUp);
+    } else {
+      domElement.ownerDocument.removeEventListener(
+        'mousemove',
+        this.onDocumentMouseMove
+      );
+      domElement.removeEventListener('mousedown', this.onMouseDown);
+      domElement.removeEventListener('mouseup', this.onMouseUp);
+      domElement.removeEventListener('touchstart', this.onTouchStart);
+      domElement.removeEventListener('touchmove', this.onTouchMove);
+      domElement.removeEventListener('touchend', this.onTouchEnd);
+    }
   };
 
   add = (object, childNames = []) => {
@@ -164,7 +184,7 @@ export class InteractionManager {
     });
   };
 
-  onDocumentTouchMove = (touchEvent) => {
+  onTouchMove = (touchEvent) => {
     // event.preventDefault();
 
     this.mapPositionToPoint(
@@ -183,7 +203,7 @@ export class InteractionManager {
     });
   };
 
-  onDocumentMouseClick = (mouseEvent) => {
+  onMouseClick = (mouseEvent) => {
     this.update();
 
     const event = new InteractiveEvent('click', mouseEvent);
@@ -195,7 +215,9 @@ export class InteractionManager {
     });
   };
 
-  onDocumentMouseDown = (mouseEvent) => {
+  onMouseDown = (mouseEvent) => {
+    this.mapPositionToPoint(this.mouse, mouseEvent.clientX, mouseEvent.clientY);
+
     this.update();
 
     const event = new InteractiveEvent('mousedown', mouseEvent);
@@ -207,7 +229,7 @@ export class InteractionManager {
     });
   };
 
-  onDocumentTouchStart = (touchEvent) => {
+  onTouchStart = (touchEvent) => {
     this.mapPositionToPoint(
       this.mouse,
       touchEvent.touches[0].clientX,
@@ -228,7 +250,7 @@ export class InteractionManager {
     });
   };
 
-  onDocumentMouseUp = (mouseEvent) => {
+  onMouseUp = (mouseEvent) => {
     const event = new InteractiveEvent('mouseup', mouseEvent);
 
     this.interactiveObjects.forEach((object) => {
@@ -236,7 +258,7 @@ export class InteractionManager {
     });
   };
 
-  onDocumentTouchEnd = (touchEvent) => {
+  onTouchEnd = (touchEvent) => {
     this.mapPositionToPoint(
       this.mouse,
       touchEvent.touches[0].clientX,
