@@ -181,7 +181,7 @@
               }
             });
 
-            child.addEventListener('click', (event) => {
+            child.addEventListener('mousedown', (event) => {
               console.log(event);
               console.log(event.target.name);
               event.stopPropagation();
@@ -192,7 +192,7 @@
 
               const path = getPath(event.target);
               logDiv.innerHTML =
-                '<span style="color: #0000ff">' + path + ' – click</span>';
+                '<span style="color: #0000ff">' + path + ' – mousedown</span>';
             });
           }
         });
@@ -201,7 +201,7 @@
       const animate = (time) => {
         requestAnimationFrame(animate);
 
-        // controls.update();
+        controls.update();
 
         interactionManager.update();
 
