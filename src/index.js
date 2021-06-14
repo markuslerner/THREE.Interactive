@@ -65,25 +65,25 @@ export class InteractionManager {
   }
 
   dispose = () => {
-    domElement.removeEventListener('click', this.onMouseClick);
+    this.domElement.removeEventListener('click', this.onMouseClick);
 
     if (this.supportsPointerEvents) {
-      domElement.ownerDocument.removeEventListener(
+      this.domElement.ownerDocument.removeEventListener(
         'pointermove',
         this.onDocumentMouseMove
       );
-      domElement.removeEventListener('pointerdown', this.onMouseDown);
-      domElement.removeEventListener('pointerup', this.onMouseUp);
+      this.domElement.removeEventListener('pointerdown', this.onMouseDown);
+      this.domElement.removeEventListener('pointerup', this.onMouseUp);
     } else {
-      domElement.ownerDocument.removeEventListener(
+      this.domElement.ownerDocument.removeEventListener(
         'mousemove',
         this.onDocumentMouseMove
       );
-      domElement.removeEventListener('mousedown', this.onMouseDown);
-      domElement.removeEventListener('mouseup', this.onMouseUp);
-      domElement.removeEventListener('touchstart', this.onTouchStart);
-      domElement.removeEventListener('touchmove', this.onTouchMove);
-      domElement.removeEventListener('touchend', this.onTouchEnd);
+      this.domElement.removeEventListener('mousedown', this.onMouseDown);
+      this.domElement.removeEventListener('mouseup', this.onMouseUp);
+      this.domElement.removeEventListener('touchstart', this.onTouchStart);
+      this.domElement.removeEventListener('touchmove', this.onTouchMove);
+      this.domElement.removeEventListener('touchend', this.onTouchEnd);
     }
   };
 
