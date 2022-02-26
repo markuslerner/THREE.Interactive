@@ -3,10 +3,11 @@
   "version": "1.1.0",
   "description": "Fast and simple interaction manager for THREE.js",
   "type": "module",
+  "types": "./build/index.d.ts",
   "module": "./build/three.interactive.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "esbuild src/index.ts --bundle --minify --format=esm --sourcemap --outfile=build/three.interactive.js",
+    "build": "tsc && esbuild src/index.ts --bundle --minify --format=esm --sourcemap --outfile=build/three.interactive.js",
     "lint": "eslint src/** --ext .js,.ts",
     "examples": "ws"
   },
