@@ -1,7 +1,12 @@
 import { Raycaster, Vector2 } from 'three';
 
 export class InteractiveObject {
-  constructor(target, name) {
+  target: THREE.Object3D;
+  name: string;
+  intersected: boolean;
+  wasIntersected: boolean = false;
+  distance: number;
+  constructor(target: THREE.Object3D, name: string) {
     this.target = target;
     this.name = name;
     this.intersected = false;
@@ -10,7 +15,16 @@ export class InteractiveObject {
 }
 
 export class InteractiveEvent {
-  constructor(type, originalEvent = null) {
+  type: string;
+  cancelBubble: boolean;
+  originalEvent: Event | null;
+
+  // Dummy default values
+  coords: Vector2 = new Vector2(0, 0);
+  distance: number = 0;
+  intersected: boolean = false;
+
+  constructor(type: string, originalEvent: Event | null = null) {
     this.cancelBubble = false;
     this.type = type;
     this.originalEvent = originalEvent;
@@ -21,7 +35,21 @@ export class InteractiveEvent {
 }
 
 export class InteractionManager {
-  constructor(renderer, camera, domElement) {
+  renderer: THREE.Renderer;
+  camera: THREE.Camera;
+  domElement: HTMLElement;
+  mouse: Vector2;
+  supportsPointerEvents: boolean;
+  interactiveObjects: InteractiveObject[];
+  raycaster: THREE.Raycaster;
+
+  treatTouchEventsAsMouseEvents: boolean;
+
+  constructor(
+    renderer: THREE.Renderer,
+    camera: THREE.Camera,
+    domElement: HTMLElement
+  ) {
     this.renderer = renderer;
     this.camera = camera;
     this.domElement = domElement;
@@ -87,7 +115,7 @@ export class InteractionManager {
     }
   };
 
-  add = (object, childNames = []) => {
+  add = (object: THREE.Object3D, childNames: string[] = []) => {
     if (object) {
       if (childNames.length > 0) {
         childNames.forEach((name) => {
@@ -104,26 +132,15 @@ export class InteractionManager {
     }
   };
 
-  remove = (object, childNames = []) => {
-    if (object) {
-      if (childNames.length > 0) {
-        const interactiveObjectsNew = [];
-        this.interactiveObjects.forEach((o) => {
-          if (!childNames.includes(o.name)) {
-            interactiveObjectsNew.push(o);
-          }
-        });
-        this.interactiveObjects = interactiveObjectsNew;
-      } else {
-        const interactiveObjectsNew = [];
-        this.interactiveObjects.forEach((o) => {
-          if (o.name !== object.name) {
-            interactiveObjectsNew.push(o);
-          }
-        });
-        this.interactiveObjects = interactiveObjectsNew;
-      }
-    }
+  remove = (object: THREE.Object3D, childNames: string[] = []) => {
+    if (!object) return;
+    const filterSet = new Set<string>(
+      childNames.length > 0 ? childNames : [object.name]
+    );
+
+    this.interactiveObjects = this.interactiveObjects.filter(
+      (o) => !filterSet.has(o.name)
+    );
   };
 
   update = () => {
@@ -153,8 +170,8 @@ export class InteractionManager {
     });
   };
 
-  checkIntersection = (object) => {
-    var intersects = this.raycaster.intersectObjects([object.target], true);
+  checkIntersection = (object: InteractiveObject) => {
+    const intersects = this.raycaster.intersectObjects([object.target], true);
 
     object.wasIntersected = object.intersected;
 
@@ -172,7 +189,7 @@ export class InteractionManager {
     }
   };
 
-  onDocumentMouseMove = (mouseEvent) => {
+  onDocumentMouseMove = (mouseEvent: MouseEvent | PointerEvent) => {
     // event.preventDefault();
 
     this.mapPositionToPoint(this.mouse, mouseEvent.clientX, mouseEvent.clientY);
@@ -184,7 +201,7 @@ export class InteractionManager {
     });
   };
 
-  onTouchMove = (touchEvent) => {
+  onTouchMove = (touchEvent: TouchEvent) => {
     // event.preventDefault();
 
     this.mapPositionToPoint(
@@ -203,7 +220,7 @@ export class InteractionManager {
     });
   };
 
-  onMouseClick = (mouseEvent) => {
+  onMouseClick = (mouseEvent: MouseEvent) => {
     this.update();
 
     const event = new InteractiveEvent('click', mouseEvent);
@@ -215,7 +232,7 @@ export class InteractionManager {
     });
   };
 
-  onMouseDown = (mouseEvent) => {
+  onMouseDown = (mouseEvent: MouseEvent | PointerEvent) => {
     this.mapPositionToPoint(this.mouse, mouseEvent.clientX, mouseEvent.clientY);
 
     this.update();
@@ -229,7 +246,7 @@ export class InteractionManager {
     });
   };
 
-  onTouchStart = (touchEvent) => {
+  onTouchStart = (touchEvent: TouchEvent) => {
     this.mapPositionToPoint(
       this.mouse,
       touchEvent.touches[0].clientX,
@@ -250,7 +267,7 @@ export class InteractionManager {
     });
   };
 
-  onMouseUp = (mouseEvent) => {
+  onMouseUp = (mouseEvent: MouseEvent | PointerEvent) => {
     const event = new InteractiveEvent('mouseup', mouseEvent);
 
     this.interactiveObjects.forEach((object) => {
@@ -258,7 +275,7 @@ export class InteractionManager {
     });
   };
 
-  onTouchEnd = (touchEvent) => {
+  onTouchEnd = (touchEvent: TouchEvent) => {
     this.mapPositionToPoint(
       this.mouse,
       touchEvent.touches[0].clientX,
@@ -277,7 +294,7 @@ export class InteractionManager {
     });
   };
 
-  dispatch = (object, event) => {
+  dispatch = (object: InteractiveObject, event: InteractiveEvent) => {
     if (object.target && !event.cancelBubble) {
       event.coords = this.mouse;
       event.distance = object.distance;
@@ -286,22 +303,8 @@ export class InteractionManager {
     }
   };
 
-  mapPositionToPoint = (point, x, y) => {
-    let rect;
-
-    // IE 11 fix
-    if (!this.renderer.domElement.parentElement) {
-      rect = {
-        x: 0,
-        y: 0,
-        left: 0,
-        top: 0,
-        width: 0,
-        height: 0,
-      };
-    } else {
-      rect = this.renderer.domElement.getBoundingClientRect();
-    }
+  mapPositionToPoint = (point: Vector2, x: number, y: number) => {
+    const rect = this.renderer.domElement.getBoundingClientRect();
 
     point.x = ((x - rect.left) / rect.width) * 2 - 1;
     point.y = -((y - rect.top) / rect.height) * 2 + 1;
