@@ -41,6 +41,7 @@ export class InteractionManager {
   mouse: Vector2;
   supportsPointerEvents: boolean;
   interactiveObjects: InteractiveObject[];
+  closestObject: InteractiveObject | null;
   raycaster: THREE.Raycaster;
 
   treatTouchEventsAsMouseEvents: boolean;
@@ -59,6 +60,7 @@ export class InteractionManager {
     this.supportsPointerEvents = !!window.PointerEvent;
 
     this.interactiveObjects = [];
+    this.closestObject = null;
 
     this.raycaster = new Raycaster();
 
@@ -156,16 +158,30 @@ export class InteractionManager {
       return a.distance - b.distance;
     });
 
-    const eventOut = new InteractiveEvent('mouseout');
+    const eventOutClosest = new InteractiveEvent('mouseout');
+    const eventOverClosest = new InteractiveEvent('mouseover');
+    const newClosestObject =
+      this.interactiveObjects.find((object) => object.intersected) ?? null;
+    if (newClosestObject != this.closestObject) {
+      if (this.closestObject) {
+        this.dispatch(this.closestObject, eventOutClosest);
+      }
+      if (newClosestObject) {
+        this.dispatch(newClosestObject, eventOverClosest);
+      }
+      this.closestObject = newClosestObject;
+    }
+
+    const eventLeave = new InteractiveEvent('mouseleave');
     this.interactiveObjects.forEach((object) => {
       if (!object.intersected && object.wasIntersected) {
-        this.dispatch(object, eventOut);
+        this.dispatch(object, eventLeave);
       }
     });
-    const eventOver = new InteractiveEvent('mouseover');
+    const eventEnter = new InteractiveEvent('mouseenter');
     this.interactiveObjects.forEach((object) => {
       if (object.intersected && !object.wasIntersected) {
-        this.dispatch(object, eventOver);
+        this.dispatch(object, eventEnter);
       }
     });
   };
