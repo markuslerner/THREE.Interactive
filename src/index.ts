@@ -172,29 +172,35 @@ export class InteractionManager {
       return a.distance - b.distance;
     });
 
-    const eventOutClosest = new InteractiveEvent('mouseout');
-    const eventOverClosest = new InteractiveEvent('mouseover');
     const newClosestObject =
       this.interactiveObjects.find((object) => object.intersected) ?? null;
     if (newClosestObject != this.closestObject) {
       if (this.closestObject) {
+        const eventOutClosest = new InteractiveEvent('mouseout');
         this.dispatch(this.closestObject, eventOutClosest);
       }
       if (newClosestObject) {
+        const eventOverClosest = new InteractiveEvent('mouseover');
         this.dispatch(newClosestObject, eventOverClosest);
       }
       this.closestObject = newClosestObject;
     }
 
-    const eventLeave = new InteractiveEvent('mouseleave');
+    let eventLeave: InteractiveEvent;
     this.interactiveObjects.forEach((object) => {
       if (!object.intersected && object.wasIntersected) {
+        if (!eventLeave) {
+          eventLeave = new InteractiveEvent('mouseleave');
+        }
         this.dispatch(object, eventLeave);
       }
     });
-    const eventEnter = new InteractiveEvent('mouseenter');
+    let eventEnter: InteractiveEvent;
     this.interactiveObjects.forEach((object) => {
       if (object.intersected && !object.wasIntersected) {
+        if (!eventEnter) {
+          eventEnter = new InteractiveEvent('mouseenter');
+        }
         this.dispatch(object, eventEnter);
       }
     });
