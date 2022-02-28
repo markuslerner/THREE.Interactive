@@ -14,7 +14,10 @@
 
     <div id="title">
       <h1>THREE.Interactive Depth Example</h1>
-      <p>If event.preventDefault is called, clicks are only dispatched on the element closest to the camera</p>
+      <p>
+        If event.preventDefault is called, clicks are only dispatched on the
+        element closest to the camera
+      </p>
 
       <ul>
         <li><a href="./index.html">« Index</a></li>
@@ -37,7 +40,7 @@
     <script src="https://unpkg.com/three@0.122.0/examples/js/controls/TrackballControls.js"></script>
 
     <script type="module">
-      import { InteractionManager } from "../build/three.interactive.js";
+      import { InteractionManager } from '../build/three.interactive.js';
       const stats = new Stats();
       stats.dom.style.left = 'auto';
       stats.dom.style.right = '0';
@@ -45,7 +48,10 @@
       stats.dom.style.bottom = '0';
       document.body.appendChild(stats.dom);
 
-      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      const renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true,
+      });
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(window.innerWidth, window.innerHeight);
       document.getElementById('container').appendChild(renderer.domElement);
@@ -107,11 +113,40 @@
       // });
 
       group.children.forEach((child) => {
+        child.addEventListener('mouseenter', (event) => {
+          console.log(event);
+          event.stopPropagation();
+
+          document.querySelector('#title .log').innerHTML +=
+            '<span style="color: #ff8800">' +
+            event.target.name +
+            ' – mouseenter, distance: ' +
+            event.distance +
+            '</span><br/>';
+
+          event.target.material.color.set(0xff8800);
+
+          document.body.style.cursor = 'pointer';
+        });
+
+        child.addEventListener('mouseleave', (event) => {
+          console.log(event);
+
+          event.target.material.color.set(event.target.defaultColor);
+
+          document.body.style.cursor = 'default';
+        });
+
         child.addEventListener('mouseover', (event) => {
           console.log(event);
           event.stopPropagation();
 
-          document.querySelector('#title .log').innerHTML += '<span style="color: #ff0000">' + event.target.name + ' – mouseover, distance: ' + event.distance + '</span><br/>';
+          document.querySelector('#title .log').innerHTML +=
+            '<span style="color: #ff0000">' +
+            event.target.name +
+            ' – mouseover, distance: ' +
+            event.distance +
+            '</span><br/>';
 
           event.target.material.color.set(0xff0000);
 
@@ -128,26 +163,33 @@
           console.log(event);
           event.stopPropagation();
 
-          document.querySelector('#title .log').innerHTML += '<span style="color: #0000ff">' + event.target.name + ' – mousedown, distance: ' + event.distance + '</span><br/>';
+          document.querySelector('#title .log').innerHTML +=
+            '<span style="color: #0000ff">' +
+            event.target.name +
+            ' – mousedown, distance: ' +
+            event.distance +
+            '</span><br/>';
 
           event.target.material.color.set(0x0000ff);
-
         });
         child.addEventListener('mouseup', (event) => {
           console.log(event);
 
-          if(event.intersected) {
+          if (event.intersected) {
             event.target.material.color.set(0xff0000);
           } else {
             event.target.material.color.set(0x000000);
           }
-
         });
         child.addEventListener('click', (event) => {
           console.log(event);
           event.stopPropagation();
 
-          document.querySelector('#title .log').innerHTML += event.target.name + ' – click, distance: ' + event.distance + '<br/>';
+          document.querySelector('#title .log').innerHTML +=
+            event.target.name +
+            ' – click, distance: ' +
+            event.distance +
+            '<br/>';
         });
         interactionManager.add(child);
       });
