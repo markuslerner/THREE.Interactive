@@ -50,7 +50,7 @@ var InteractiveEvent = /*#__PURE__*/function () {
 
   return InteractiveEvent;
 }();
-var InteractionManager = function InteractionManager(renderer, camera, domElement) {
+var InteractionManager = function InteractionManager(renderer, camera, domElement, dontBindEventsOnBody) {
   var _this = this;
 
   _classCallCheck(this, InteractionManager);
@@ -291,6 +291,12 @@ var InteractionManager = function InteractionManager(renderer, camera, domElemen
   this.renderer = renderer;
   this.camera = camera;
   this.domElement = domElement;
+  this.bindEventsOnBodyElement = true;
+
+  if (typeof dontBindEventsOnBody !== 'undefined' && dontBindEventsOnBody === true) {
+    this.bindEventsOnBodyElement = false;
+  }
+
   this.mouse = new Vector2(-1, 1); // top left default position
 
   this.supportsPointerEvents = !!window.PointerEvent;
@@ -299,11 +305,21 @@ var InteractionManager = function InteractionManager(renderer, camera, domElemen
   domElement.addEventListener('click', this.onMouseClick);
 
   if (this.supportsPointerEvents) {
-    domElement.ownerDocument.addEventListener('pointermove', this.onDocumentMouseMove);
+    if (this.bindEventsOnBodyElement) {
+      domElement.ownerDocument.addEventListener('pointermove', this.onDocumentMouseMove);
+    } else {
+      domElement.addEventListener('pointermove', this.onDocumentMouseMove);
+    }
+
     domElement.addEventListener('pointerdown', this.onMouseDown);
     domElement.addEventListener('pointerup', this.onMouseUp);
   } else {
-    domElement.ownerDocument.addEventListener('mousemove', this.onDocumentMouseMove);
+    if (this.bindEventsOnBodyElement) {
+      domElement.ownerDocument.addEventListener('mousemove', this.onDocumentMouseMove);
+    } else {
+      domElement.addEventListener('mousemove', this.onDocumentMouseMove);
+    }
+
     domElement.addEventListener('mousedown', this.onMouseDown);
     domElement.addEventListener('mouseup', this.onMouseUp);
     domElement.addEventListener('touchstart', this.onTouchStart, {
