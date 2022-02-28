@@ -38,6 +38,7 @@ export class InteractionManager {
   renderer: THREE.Renderer;
   camera: THREE.Camera;
   domElement: HTMLElement;
+  bindEventsOnBodyElement: boolean;
   mouse: Vector2;
   supportsPointerEvents: boolean;
   interactiveObjects: InteractiveObject[];
@@ -49,11 +50,16 @@ export class InteractionManager {
   constructor(
     renderer: THREE.Renderer,
     camera: THREE.Camera,
-    domElement: HTMLElement
+    domElement: HTMLElement,
+    dontBindEventsOnBody: boolean | undefined
   ) {
     this.renderer = renderer;
     this.camera = camera;
     this.domElement = domElement;
+    this.bindEventsOnBodyElement = true;
+    if (typeof dontBindEventsOnBody !== 'undefined' && dontBindEventsOnBody) {
+      this.bindEventsOnBodyElement = false;
+    }
 
     this.mouse = new Vector2(-1, 1); // top left default position
 
@@ -67,17 +73,31 @@ export class InteractionManager {
     domElement.addEventListener('click', this.onMouseClick);
 
     if (this.supportsPointerEvents) {
-      domElement.ownerDocument.addEventListener(
-        'pointermove',
-        this.onDocumentMouseMove
-      );
+      if (this.bindEventsOnBodyElement) {
+        domElement.ownerDocument.addEventListener(
+          'pointermove',
+          this.onDocumentMouseMove
+        );
+      } else {
+        domElement.addEventListener(
+          'pointermove',
+          this.onDocumentMouseMove
+        );
+      }
       domElement.addEventListener('pointerdown', this.onMouseDown);
       domElement.addEventListener('pointerup', this.onMouseUp);
     } else {
-      domElement.ownerDocument.addEventListener(
-        'mousemove',
-        this.onDocumentMouseMove
-      );
+      if (this.bindEventsOnBodyElement) {
+        domElement.ownerDocument.addEventListener(
+          'mousemove',
+          this.onDocumentMouseMove
+        );
+      } else {
+        domElement.addEventListener(
+          'mousemove',
+          this.onDocumentMouseMove
+        );
+      }
       domElement.addEventListener('mousedown', this.onMouseDown);
       domElement.addEventListener('mouseup', this.onMouseUp);
       domElement.addEventListener('touchstart', this.onTouchStart, {

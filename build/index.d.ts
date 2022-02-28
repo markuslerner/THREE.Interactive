@@ -21,13 +21,14 @@ export declare class InteractionManager {
     renderer: THREE.Renderer;
     camera: THREE.Camera;
     domElement: HTMLElement;
+    bindEventsOnBodyElement: boolean;
     mouse: Vector2;
     supportsPointerEvents: boolean;
     interactiveObjects: InteractiveObject[];
     closestObject: InteractiveObject | null;
     raycaster: THREE.Raycaster;
     treatTouchEventsAsMouseEvents: boolean;
-    constructor(renderer: THREE.Renderer, camera: THREE.Camera, domElement: HTMLElement);
+    constructor(renderer: THREE.Renderer, camera: THREE.Camera, domElement: HTMLElement, dontBindEventsOnBody: boolean | undefined);
     dispose: () => void;
     add: (object: THREE.Object3D, childNames?: string[]) => void;
     remove: (object: THREE.Object3D, childNames?: string[]) => void;
