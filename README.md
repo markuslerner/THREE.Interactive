@@ -123,7 +123,7 @@ animate();
 
 #### InteractionManager class
 
-`new InteractionManager(renderer, camera, renderer.domElement)` – constructor InteractionManager instance
+`new InteractionManager(renderer, camera, renderer.domElement [, dontBindEventsOnBody])` – constructor InteractionManager instance
 
 **Members:**
 
