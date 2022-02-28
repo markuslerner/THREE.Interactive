@@ -79,10 +79,7 @@ export class InteractionManager {
           this.onDocumentMouseMove
         );
       } else {
-        domElement.addEventListener(
-          'pointermove',
-          this.onDocumentMouseMove
-        );
+        domElement.addEventListener('pointermove', this.onDocumentMouseMove);
       }
       domElement.addEventListener('pointerdown', this.onMouseDown);
       domElement.addEventListener('pointerup', this.onMouseUp);
@@ -93,10 +90,7 @@ export class InteractionManager {
           this.onDocumentMouseMove
         );
       } else {
-        domElement.addEventListener(
-          'mousemove',
-          this.onDocumentMouseMove
-        );
+        domElement.addEventListener('mousemove', this.onDocumentMouseMove);
       }
       domElement.addEventListener('mousedown', this.onMouseDown);
       domElement.addEventListener('mouseup', this.onMouseUp);
