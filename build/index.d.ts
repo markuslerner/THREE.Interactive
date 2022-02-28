@@ -24,6 +24,7 @@ export declare class InteractionManager {
     mouse: Vector2;
     supportsPointerEvents: boolean;
     interactiveObjects: InteractiveObject[];
+    closestObject: InteractiveObject | null;
     raycaster: THREE.Raycaster;
     treatTouchEventsAsMouseEvents: boolean;
     constructor(renderer: THREE.Renderer, camera: THREE.Camera, domElement: HTMLElement);
