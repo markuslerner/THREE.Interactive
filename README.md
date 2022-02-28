@@ -4,7 +4,7 @@
 
 Fast and simple interaction manager for [THREE.js](https://github.com/mrdoob/three.js/) for enabling mouse and touch events on 3D objects.
 
-*Note: When using ReactJS I can highly recommend [react-three-fiber](https://github.com/pmndrs/react-three-fiber), which has built-in interaction support. For pure THREE.js projects, this little library can be very useful though.*
+_Note: When using ReactJS I can highly recommend [react-three-fiber](https://github.com/pmndrs/react-three-fiber), which has built-in interaction support. For pure THREE.js projects, this little library can be very useful though._
 
 ### Hot it works:
 
@@ -14,14 +14,13 @@ Alternative to [three.interaction](https://github.com/jasonChen1982/three.intera
 
 Collaborations and improvements are welcome.
 
+### Examples
 
-### Examples ####
+- [Simple](https://dev.markuslerner.com/three.interactive/examples/simple.html): Basic example
+- [Depth](https://dev.markuslerner.com/three.interactive/examples/depth.html): Overlapping objects example
+- [glTF](https://dev.markuslerner.com/three.interactive/examples/gltf.html): Hover/click gltf objects example
 
-* [Simple](https://dev.markuslerner.com/three.interactive/examples/simple.html): Basic example
-* [Depth](https://dev.markuslerner.com/three.interactive/examples/depth.html): Overlapping objects example
-* [glTF](https://dev.markuslerner.com/three.interactive/examples/gltf.html): Hover/click gltf objects example
-
-### Usage ####
+### Usage
 
 1. Include script:
 
@@ -58,8 +57,7 @@ cube.addEventListener("click", (event) => {
 interactionManager.update();
 ```
 
-
-### Simple example ####
+### Simple example
 
 ```
 import * as THREE from "three";
@@ -117,56 +115,50 @@ const animate = (time) => {
 animate();
 ```
 
-### API ###
+### API
 
-#### InteractionManager class ####
+#### InteractionManager class
 
-
-```new InteractionManager(renderer, camera, renderer.domElement)``` – constructor InteractionManager instance
-
-**Members:**
-
-```treatTouchEventsAsMouseEvents``` (boolean) – wether touch events should fire as mouse events, default: true
-
-
-**Methods:**
-
-```interactionManager.add(object, childNames = [])``` – add object(s), optionally select only child objects by names
-
-```interactionManager.remove(object, childNames = [])``` – remove object(s)
-
-```interactionManager.update()``` – update InteractionManager on each render
-
-```interactionManager.dispose()``` – dispose InteractionManager
-
-
-#### InteractiveEvent class ####
-
+`new InteractionManager(renderer, camera, renderer.domElement)` – constructor InteractionManager instance
 
 **Members:**
 
-```cancelBubble``` (boolean) – wether events should continue to bubble, default: false
-
-```coords``` (THREE.Vector2) – Mouse/touch coords
-
-```distance``` (number) – Distance of intersected point from camera
-
-```intersected``` (boolean) – Whether object is still intersected
-
-```originalEvent``` (Event object) – Original event, if available (mouse, touch)
-
-```target``` (THREE.Object3D) – Target object
-
-```type``` (string) – event type: 'click', 'mousedown', 'mousemove', 'mouseup', 'touchstart', 'touchmove', 'touchend'
-
+`treatTouchEventsAsMouseEvents` (boolean) – wether touch events should fire as mouse events, default: true
 
 **Methods:**
 
-```stopPropagation``` – stop bubbling of event (cancelBubble), e.g. when only the object closest to the camera is supposed to fire an event
+`interactionManager.add(object, childNames = [])` – add object(s), optionally select only child objects by names
 
+`interactionManager.remove(object, childNames = [])` – remove object(s)
 
-#### License ####
+`interactionManager.update()` – update InteractionManager on each render
+
+`interactionManager.dispose()` – dispose InteractionManager
+
+#### InteractiveEvent class
+
+**Members:**
+
+`cancelBubble` (boolean) – wether events should continue to bubble, default: false
+
+`coords` (THREE.Vector2) – Mouse/touch coords
+
+`distance` (number) – Distance of intersected point from camera
+
+`intersected` (boolean) – Whether object is still intersected
+
+`originalEvent` (Event object) – Original event, if available (MouseEvent, TouchEvent or PointerEvent)
+
+`target` (THREE.Object3D) – Target object
+
+`type` (string) – event type: 'click', 'mouseover', 'mouseout', 'mouseenter', 'mouseleave', 'mousedown', 'mousemove', 'mouseup', 'touchstart', 'touchmove', 'touchend', 'pointerdown', 'pointerup'
+
+**Methods:**
+
+`stopPropagation` – stop bubbling of event (cancelBubble), e.g. when only the object closest to the camera is supposed to fire an event
+
+#### License
 
 MIT licensed
 
-Copyright (C) 2020 Markus Lerner, http://www.markuslerner.com
+[Markus Lerner](http://www.markuslerner.com) & contributors
