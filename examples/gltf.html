@@ -41,13 +41,33 @@
     <div id="progress-bar"></div>
 
     <script src="https://unpkg.com/stats.js@0.17.0/build/stats.min.js"></script>
-    <script src="https://unpkg.com/three@0.122.0/build/three.js"></script>
-    <script src="https://unpkg.com/three@0.122.0/examples/js/controls/OrbitControls.js"></script>
-    <script src="https://unpkg.com/three@0.122.0/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://unpkg.com/three@0.122.0/examples/js/loaders/RGBELoader.js"></script>
+
+    <!-- Import maps polyfill -->
+    <!-- Remove this when import maps will be widely supported -->
+    <script
+      async
+      src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"
+    ></script>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.122.0/build/three.module.js",
+          "OrbitControls": "https://unpkg.com/three@0.122.0/examples/jsm/controls/OrbitControls.js",
+          "GLTFLoader": "https://unpkg.com/three@0.122.0/examples/jsm/loaders/GLTFLoader.js",
+          "RGBELoader": "https://unpkg.com/three@0.122.0/examples/jsm/loaders/RGBELoader.js"
+        }
+      }
+    </script>
 
     <script type="module">
-      import { InteractionManager } from "../build/three.interactive.js";
+      import * as THREE from 'three';
+      import { OrbitControls } from 'OrbitControls';
+      import { GLTFLoader } from 'GLTFLoader';
+      import { RGBELoader } from 'RGBELoader';
+
+      import { InteractionManager } from '../build/three.interactive.js';
+
       const stats = new Stats();
       stats.dom.style.left = 'auto';
       stats.dom.style.right = '0';
@@ -55,7 +75,10 @@
       stats.dom.style.bottom = '0';
       document.body.appendChild(stats.dom);
 
-      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+      const renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true,
+      });
       renderer.setPixelRatio(window.devicePixelRatio);
       renderer.setSize(window.innerWidth, window.innerHeight);
       renderer.toneMapping = THREE.ACESFilmicToneMapping;
@@ -73,7 +96,7 @@
       );
       camera.position.set(0.0, 0.0, 4.0);
 
-      const controls = new THREE.OrbitControls(camera, renderer.domElement);
+      const controls = new OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true;
       controls.dampingFactor = 0.12;
       controls.minDistance = 0.1;
@@ -99,7 +122,7 @@
       const pmremGenerator = new THREE.PMREMGenerator(renderer);
       pmremGenerator.compileEquirectangularShader();
 
-      const rgbeLoader = new THREE.RGBELoader();
+      const rgbeLoader = new RGBELoader();
       rgbeLoader
         .setDataType(THREE.UnsignedByteType)
         .load('textures/skybox_512px.hdr', (texture) => {
@@ -118,85 +141,92 @@
 
       const logDiv = document.querySelector('#title .log');
 
-      const loader = new THREE.GLTFLoader();
+      const loader = new GLTFLoader();
       loader.manager = loadingManager;
-      loader.load('models/microphone_gxl_066_bafhcteks/scene.gltf', function (
-        gltf
-      ) {
-        const model = gltf.scene;
+      loader.load(
+        'models/microphone_gxl_066_bafhcteks/scene.gltf',
+        function (gltf) {
+          const model = gltf.scene;
 
-        scene.add(model);
+          scene.add(model);
 
-        let objectsHover = [];
+          let objectsHover = [];
 
-        model.traverse((child) => {
-          if (child.children.length === 0) {
-            // Add only objects widthout children
-            if (child.material) {
-              child.material = child.material.clone();
-              child.userData.initialEmissive = child.material.emissive.clone();
-              child.material.emissiveIntensity = 0.5;
-            }
-
-            interactionManager.add(child);
-
-            child.addEventListener('mouseover', (event) => {
-              console.log(event);
-              // event.stopPropagation();
-              if (!objectsHover.includes(event.target))
-                objectsHover.push(event.target);
-
-              document.body.style.cursor = 'pointer';
-
-              const path = getPath(event.target);
-              logDiv.innerHTML =
-                '<span style="color: #ff0000">' + path + ' – mouseover</span>';
-
+          model.traverse((child) => {
+            if (child.children.length === 0) {
+              // Add only objects widthout children
               if (child.material) {
-                child.userData.materialEmissiveHex = child.material.emissive.getHex();
-                child.material.emissive.setHex(0xff0000);
+                child.material = child.material.clone();
+                child.userData.initialEmissive =
+                  child.material.emissive.clone();
                 child.material.emissiveIntensity = 0.5;
               }
-            });
 
-            child.addEventListener('mouseout', (event) => {
-              console.log(event);
-              // event.stopPropagation();
+              interactionManager.add(child);
 
-              objectsHover = objectsHover.filter((n) => n !== event.target);
-              if (objectsHover.length > 0) {
-                const o = objectsHover[objectsHover.length - 1];
-                o.material.emissive.setHex(0xff0000);
-                logDiv.innerHTML = getPath(o);
-              } else {
-                logDiv.innerHTML = '';
-              }
+              child.addEventListener('mouseover', (event) => {
+                console.log(event);
+                // event.stopPropagation();
+                if (!objectsHover.includes(event.target))
+                  objectsHover.push(event.target);
 
-              document.body.style.cursor = 'default';
+                document.body.style.cursor = 'pointer';
 
-              if (child.material) {
-                child.material.emissive.setHex(
-                  child.userData.materialEmissiveHex
-                );
-              }
-            });
+                const path = getPath(event.target);
+                logDiv.innerHTML =
+                  '<span style="color: #ff0000">' +
+                  path +
+                  ' – mouseover</span>';
 
-            child.addEventListener('mousedown', (event) => {
-              console.log(event);
-              console.log(event.target.name);
-              event.stopPropagation();
+                if (child.material) {
+                  child.userData.materialEmissiveHex =
+                    child.material.emissive.getHex();
+                  child.material.emissive.setHex(0xff0000);
+                  child.material.emissiveIntensity = 0.5;
+                }
+              });
 
-              if (child.material) {
-                child.material.emissive.setHex(0x0000ff);
-              }
+              child.addEventListener('mouseout', (event) => {
+                console.log(event);
+                // event.stopPropagation();
 
-              const path = getPath(event.target);
-              logDiv.innerHTML =
-                '<span style="color: #0000ff">' + path + ' – mousedown</span>';
-            });
-          }
-        });
-      });
+                objectsHover = objectsHover.filter((n) => n !== event.target);
+                if (objectsHover.length > 0) {
+                  const o = objectsHover[objectsHover.length - 1];
+                  o.material.emissive.setHex(0xff0000);
+                  logDiv.innerHTML = getPath(o);
+                } else {
+                  logDiv.innerHTML = '';
+                }
+
+                document.body.style.cursor = 'default';
+
+                if (child.material) {
+                  child.material.emissive.setHex(
+                    child.userData.materialEmissiveHex
+                  );
+                }
+              });
+
+              child.addEventListener('mousedown', (event) => {
+                console.log(event);
+                console.log(event.target.name);
+                event.stopPropagation();
+
+                if (child.material) {
+                  child.material.emissive.setHex(0x0000ff);
+                }
+
+                const path = getPath(event.target);
+                logDiv.innerHTML =
+                  '<span style="color: #0000ff">' +
+                  path +
+                  ' – mousedown</span>';
+              });
+            }
+          });
+        }
+      );
 
       const animate = (time) => {
         requestAnimationFrame(animate);
