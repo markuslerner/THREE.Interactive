@@ -7,7 +7,7 @@
   "module": "./build/three.interactive.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc && esbuild src/index.ts --bundle --minify --format=esm --sourcemap --outfile=build/three.interactive.js",
+    "build": "tsc && esbuild src/index.ts --bundle --minify --format=esm --sourcemap --external:three --outfile=build/three.interactive.js",
     "lint": "eslint src/** --ext .js,.ts",
     "examples": "ws"
   },
@@ -35,7 +35,7 @@
     "url": "https://github.com/markuslerner/THREE.Interactive/issues"
   },
   "homepage": "https://github.com/markuslerner/THREE.Interactive#readme",
-  "dependencies": {
+  "peerDependencies": {
     "three": "^0.138.0"
   },
   "devDependencies": {
