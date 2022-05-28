@@ -37,7 +37,7 @@
   },
   "homepage": "https://github.com/markuslerner/THREE.Interactive#readme",
   "peerDependencies": {
-    "three": "^0.138.0"
+    "three": ">= 0.122.0"
   },
   "devDependencies": {
     "@types/three": "^0.137.0",
