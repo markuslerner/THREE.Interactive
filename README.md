@@ -8,11 +8,11 @@ _Note: When using ReactJS I can highly recommend [react-three-fiber](https://git
 
 ### Hot it works:
 
-* Interactive Objects (THREE.Object3D) are added to the InteractionManager, which fires instances of InteractiveEvent.
+- Interactive Objects (THREE.Object3D) are added to the InteractionManager, which fires instances of InteractiveEvent.
 
-* Differenciates between mouseover/mouseout (closest objects) and mouseenter/mouseleave (all objects) events.
+- Differenciates between mouseover/mouseout (closest objects) and mouseenter/mouseleave (all objects) events.
 
-* Intersections are sorted by distance to the camera and the events are dispatched in that order (closest first). If InteractiveEvent.stopPropagation() is called, the event won't fire again on other objects.
+- Intersections are sorted by distance to the camera and the events are dispatched in that order (closest first). If InteractiveEvent.stopPropagation() is called, the event won't fire again on other objects.
 
 Alternative to [three.interaction](https://github.com/jasonChen1982/three.interaction.js).
 
@@ -26,15 +26,25 @@ Collaborations and improvements are welcome.
 
 ### Usage
 
+```console
+yarn add three.interactive
+```
+
+or
+
+```console
+npm install three.interactive
+```
+
 1. Include script:
 
-```
-import { InteractionManager } from "three.interactive";
+```js
+import { InteractionManager } from 'three.interactive';
 ```
 
 2. Create an InteractionManager instance
 
-```
+```js
 const interactionManager = new InteractionManager(
   renderer,
   camera,
@@ -44,31 +54,30 @@ const interactionManager = new InteractionManager(
 
 3. Add object to InteractionManager
 
-```
+```js
 interactionManager.add(cube);
 ```
 
 4. Add event listener to object
 
-```
-cube.addEventListener("click", (event) => {
-});
+```js
+cube.addEventListener('click', (event) => {});
 ```
 
 5. Call InteractionManager.update() on each render
 
-```
+```jsjs
 interactionManager.update();
 ```
 
 ### Simple example
 
-```
-import * as THREE from "three";
-import { InteractionManager } from "three.interactive";
+```js
+import * as THREE from 'three';
+import { InteractionManager } from 'three.interactive';
 
-const container = document.createElement("div");
-container.setAttribute("id", "container");
+const container = document.createElement('div');
+container.setAttribute('id', 'container');
 document.body.appendChild(container);
 
 const renderer = new THREE.WebGLRenderer();
@@ -78,7 +87,12 @@ container.appendChild(renderer.domElement);
 
 const scene = new THREE.Scene();
 
-const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(
+  45,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
 camera.position.set(0.0, 0.0, 10.0);
 
 const interactionManager = new InteractionManager(
@@ -91,18 +105,18 @@ const geometry = new THREE.BoxGeometry(1, 1, 1);
 const material = new THREE.MeshBasicMaterial();
 
 const cube = new THREE.Mesh(geometry, material);
-cube.addEventListener("mouseover", (event) => {
+cube.addEventListener('mouseover', (event) => {
   event.target.material.color.set(0xff0000);
-  document.body.style.cursor = "pointer";
+  document.body.style.cursor = 'pointer';
 });
-cube.addEventListener("mouseout", (event) => {
+cube.addEventListener('mouseout', (event) => {
   event.target.material.color.set(0xffffff);
-  document.body.style.cursor = "default";
+  document.body.style.cursor = 'default';
 });
-cube.addEventListener("mousedown", (event) => {
+cube.addEventListener('mousedown', (event) => {
   event.target.scale.set(1.1, 1.1, 1.1);
 });
-cube.addEventListener("click", (event) => {
+cube.addEventListener('click', (event) => {
   event.target.scale.set(1.0, 1.0, 1.0);
 });
 scene.add(cube);
