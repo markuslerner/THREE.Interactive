@@ -175,6 +175,18 @@ animate();
 
 `stopPropagation` – stop bubbling of event (cancelBubble), e.g. when only the object closest to the camera is supposed to fire an event
 
+### Editing source
+
+In order to edit the source code, run:
+
+```console
+yarn start
+```
+
+And open http://127.0.0.1:8000/ in your browers.
+
+The files in the `build` folder will automatically be rebuilt when modified.
+
 ### License
 
 MIT licensed
