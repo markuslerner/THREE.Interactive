@@ -76,34 +76,34 @@ export class InteractionManager {
       if (this.bindEventsOnBodyElement) {
         domElement.ownerDocument.addEventListener(
           'pointermove',
-          this.onDocumentMouseMove
+          this.onDocumentPointerMove
         );
       } else {
-        domElement.addEventListener('pointermove', this.onDocumentMouseMove);
+        domElement.addEventListener('pointermove', this.onDocumentPointerMove);
       }
-      domElement.addEventListener('pointerdown', this.onMouseDown);
-      domElement.addEventListener('pointerup', this.onMouseUp);
-    } else {
-      if (this.bindEventsOnBodyElement) {
-        domElement.ownerDocument.addEventListener(
-          'mousemove',
-          this.onDocumentMouseMove
-        );
-      } else {
-        domElement.addEventListener('mousemove', this.onDocumentMouseMove);
-      }
-      domElement.addEventListener('mousedown', this.onMouseDown);
-      domElement.addEventListener('mouseup', this.onMouseUp);
-      domElement.addEventListener('touchstart', this.onTouchStart, {
-        passive: true,
-      });
-      domElement.addEventListener('touchmove', this.onTouchMove, {
-        passive: true,
-      });
-      domElement.addEventListener('touchend', this.onTouchEnd, {
-        passive: true,
-      });
+      domElement.addEventListener('pointerdown', this.onPointerDown);
+      domElement.addEventListener('pointerup', this.onPointerUp);
     }
+
+    if (this.bindEventsOnBodyElement) {
+      domElement.ownerDocument.addEventListener(
+        'mousemove',
+        this.onDocumentMouseMove
+      );
+    } else {
+      domElement.addEventListener('mousemove', this.onDocumentMouseMove);
+    }
+    domElement.addEventListener('mousedown', this.onMouseDown);
+    domElement.addEventListener('mouseup', this.onMouseUp);
+    domElement.addEventListener('touchstart', this.onTouchStart, {
+      passive: true,
+    });
+    domElement.addEventListener('touchmove', this.onTouchMove, {
+      passive: true,
+    });
+    domElement.addEventListener('touchend', this.onTouchEnd, {
+      passive: true,
+    });
 
     this.treatTouchEventsAsMouseEvents = true;
   }
@@ -112,23 +112,37 @@ export class InteractionManager {
     this.domElement.removeEventListener('click', this.onMouseClick);
 
     if (this.supportsPointerEvents) {
-      this.domElement.ownerDocument.removeEventListener(
-        'pointermove',
-        this.onDocumentMouseMove
-      );
-      this.domElement.removeEventListener('pointerdown', this.onMouseDown);
-      this.domElement.removeEventListener('pointerup', this.onMouseUp);
-    } else {
+      if (this.bindEventsOnBodyElement) {
+        this.domElement.ownerDocument.removeEventListener(
+          'pointermove',
+          this.onDocumentPointerMove
+        );
+      } else {
+        this.domElement.removeEventListener(
+          'pointermove',
+          this.onDocumentPointerMove
+        );
+      }
+      this.domElement.removeEventListener('pointerdown', this.onPointerDown);
+      this.domElement.removeEventListener('pointerup', this.onPointerUp);
+    }
+
+    if (this.bindEventsOnBodyElement) {
       this.domElement.ownerDocument.removeEventListener(
         'mousemove',
         this.onDocumentMouseMove
       );
-      this.domElement.removeEventListener('mousedown', this.onMouseDown);
-      this.domElement.removeEventListener('mouseup', this.onMouseUp);
-      this.domElement.removeEventListener('touchstart', this.onTouchStart);
-      this.domElement.removeEventListener('touchmove', this.onTouchMove);
-      this.domElement.removeEventListener('touchend', this.onTouchEnd);
+    } else {
+      this.domElement.removeEventListener(
+        'mousemove',
+        this.onDocumentMouseMove
+      );
     }
+    this.domElement.removeEventListener('mousedown', this.onMouseDown);
+    this.domElement.removeEventListener('mouseup', this.onMouseUp);
+    this.domElement.removeEventListener('touchstart', this.onTouchStart);
+    this.domElement.removeEventListener('touchmove', this.onTouchMove);
+    this.domElement.removeEventListener('touchend', this.onTouchEnd);
   };
 
   add = (object: THREE.Object3D, childNames: string[] = []) => {
@@ -225,12 +239,28 @@ export class InteractionManager {
     }
   };
 
-  onDocumentMouseMove = (mouseEvent: MouseEvent | PointerEvent) => {
+  onDocumentMouseMove = (mouseEvent: MouseEvent) => {
     // event.preventDefault();
 
     this.mapPositionToPoint(this.mouse, mouseEvent.clientX, mouseEvent.clientY);
 
     const event = new InteractiveEvent('mousemove', mouseEvent);
+
+    this.interactiveObjects.forEach((object) => {
+      this.dispatch(object, event);
+    });
+  };
+
+  onDocumentPointerMove = (pointerEvent: PointerEvent) => {
+    // event.preventDefault();
+
+    this.mapPositionToPoint(
+      this.mouse,
+      pointerEvent.clientX,
+      pointerEvent.clientY
+    );
+
+    const event = new InteractiveEvent('pointermove', pointerEvent);
 
     this.interactiveObjects.forEach((object) => {
       this.dispatch(object, event);
@@ -268,12 +298,30 @@ export class InteractionManager {
     });
   };
 
-  onMouseDown = (mouseEvent: MouseEvent | PointerEvent) => {
+  onMouseDown = (mouseEvent: MouseEvent) => {
     this.mapPositionToPoint(this.mouse, mouseEvent.clientX, mouseEvent.clientY);
 
     this.update();
 
     const event = new InteractiveEvent('mousedown', mouseEvent);
+
+    this.interactiveObjects.forEach((object) => {
+      if (object.intersected) {
+        this.dispatch(object, event);
+      }
+    });
+  };
+
+  onPointerDown = (pointerEvent: PointerEvent) => {
+    this.mapPositionToPoint(
+      this.mouse,
+      pointerEvent.clientX,
+      pointerEvent.clientY
+    );
+
+    this.update();
+
+    const event = new InteractiveEvent('pointerdown', pointerEvent);
 
     this.interactiveObjects.forEach((object) => {
       if (object.intersected) {
@@ -303,8 +351,16 @@ export class InteractionManager {
     });
   };
 
-  onMouseUp = (mouseEvent: MouseEvent | PointerEvent) => {
+  onMouseUp = (mouseEvent: MouseEvent) => {
     const event = new InteractiveEvent('mouseup', mouseEvent);
+
+    this.interactiveObjects.forEach((object) => {
+      this.dispatch(object, event);
+    });
+  };
+
+  onPointerUp = (pointerEvent: PointerEvent) => {
+    const event = new InteractiveEvent('pointerup', pointerEvent);
 
     this.interactiveObjects.forEach((object) => {
       this.dispatch(object, event);
