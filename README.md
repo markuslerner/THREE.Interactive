@@ -6,6 +6,8 @@ Fast and simple interaction manager for [THREE.js](https://github.com/mrdoob/thr
 
 _Note: When using ReactJS I can highly recommend [react-three-fiber](https://github.com/pmndrs/react-three-fiber), which has built-in interaction support. For pure THREE.js projects, this little library can be very useful though._
 
+_ESM only. Currently no CJS version is built._
+
 ### Hot it works:
 
 - Interactive Objects (THREE.Object3D) are added to the InteractionManager, which fires instances of InteractiveEvent.
