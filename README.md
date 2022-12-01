@@ -2,7 +2,7 @@
 
 [![NPM Package](https://img.shields.io/npm/v/three.interactive.svg?style=flat)](https://www.npmjs.com/package/three.interactive)
 
-Fast and simple interaction manager for [THREE.js](https://github.com/mrdoob/three.js/) for enabling mouse and touch events on 3D objects.
+Fast and simple interaction manager for [THREE.js](https://github.com/mrdoob/three.js/) for enabling pointer, mouse and touch events on 3D objects.
 
 _Note: When using ReactJS I can highly recommend [react-three-fiber](https://github.com/pmndrs/react-three-fiber), which has built-in interaction support. For pure THREE.js projects, this little library can be very useful though._
 
@@ -171,7 +171,7 @@ animate();
 
 `target` (THREE.Object3D) – Target object
 
-`type` (string) – event type: 'click', 'mouseover', 'mouseout', 'mouseenter', 'mouseleave', 'mousedown', 'mousemove', 'mouseup', 'touchstart', 'touchmove', 'touchend', 'pointerdown', 'pointerup'
+`type` (string) – event type: 'click', 'mouseover', 'mouseout', 'mouseenter', 'mouseleave', 'mousedown', 'mousemove', 'mouseup', 'touchstart', 'touchmove', 'touchend', 'pointerdown', 'pointerup', 'pointermove'
 
 **Methods:**
 
