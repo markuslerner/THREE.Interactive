@@ -28,7 +28,7 @@ export declare class InteractionManager {
     closestObject: InteractiveObject | null;
     raycaster: THREE.Raycaster;
     treatTouchEventsAsMouseEvents: boolean;
-    constructor(renderer: THREE.Renderer, camera: THREE.Camera, domElement: HTMLElement, dontBindEventsOnBody: boolean | undefined);
+    constructor(renderer: THREE.Renderer, camera: THREE.Camera, domElement: HTMLElement, dontBindEventsOnBody?: boolean | undefined);
     dispose: () => void;
     add: (object: THREE.Object3D, childNames?: string[]) => void;
     remove: (object: THREE.Object3D, childNames?: string[]) => void;
