@@ -51,7 +51,7 @@ export class InteractionManager {
     renderer: THREE.Renderer,
     camera: THREE.Camera,
     domElement: HTMLElement,
-    dontBindEventsOnBody: boolean | undefined
+    dontBindEventsOnBody?: boolean | undefined
   ) {
     this.renderer = renderer;
     this.camera = camera;
