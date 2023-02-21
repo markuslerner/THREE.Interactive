@@ -270,11 +270,13 @@ export class InteractionManager {
   onTouchMove = (touchEvent: TouchEvent) => {
     // event.preventDefault();
 
-    this.mapPositionToPoint(
-      this.mouse,
-      touchEvent.touches[0].clientX,
-      touchEvent.touches[0].clientY
-    );
+    if (touchEvent.touches.length > 0) {
+      this.mapPositionToPoint(
+        this.mouse,
+        touchEvent.touches[0].clientX,
+        touchEvent.touches[0].clientY
+      );
+    }
 
     const event = new InteractiveEvent(
       this.treatTouchEventsAsMouseEvents ? 'mousemove' : 'touchmove',
@@ -331,11 +333,13 @@ export class InteractionManager {
   };
 
   onTouchStart = (touchEvent: TouchEvent) => {
-    this.mapPositionToPoint(
-      this.mouse,
-      touchEvent.touches[0].clientX,
-      touchEvent.touches[0].clientY
-    );
+    if (touchEvent.touches.length > 0) {
+      this.mapPositionToPoint(
+        this.mouse,
+        touchEvent.touches[0].clientX,
+        touchEvent.touches[0].clientY
+      );
+    }
 
     this.update();
 
@@ -368,11 +372,13 @@ export class InteractionManager {
   };
 
   onTouchEnd = (touchEvent: TouchEvent) => {
-    this.mapPositionToPoint(
-      this.mouse,
-      touchEvent.touches[0].clientX,
-      touchEvent.touches[0].clientY
-    );
+    if (touchEvent.touches.length > 0) {
+      this.mapPositionToPoint(
+        this.mouse,
+        touchEvent.touches[0].clientX,
+        touchEvent.touches[0].clientY
+      );
+    }
 
     this.update();
 
