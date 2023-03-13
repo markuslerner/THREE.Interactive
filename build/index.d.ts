@@ -17,18 +17,30 @@ export declare class InteractiveEvent {
     constructor(type: string, originalEvent?: Event | null);
     stopPropagation(): void;
 }
+export declare class InteractionManagerOptions {
+    bindEventsOnBodyElement: boolean;
+    autoAdd: boolean;
+    scene: THREE.Scene | null;
+    constructor(options: {
+        bindEventsOnBodyElement?: boolean | undefined;
+        autoAdd?: boolean | undefined;
+        scene?: THREE.Scene | undefined;
+    });
+}
 export declare class InteractionManager {
     renderer: THREE.Renderer;
     camera: THREE.Camera;
     domElement: HTMLElement;
     bindEventsOnBodyElement: boolean;
+    autoAdd: boolean;
+    scene: THREE.Scene | null;
     mouse: Vector2;
     supportsPointerEvents: boolean;
     interactiveObjects: InteractiveObject[];
     closestObject: InteractiveObject | null;
     raycaster: THREE.Raycaster;
     treatTouchEventsAsMouseEvents: boolean;
-    constructor(renderer: THREE.Renderer, camera: THREE.Camera, domElement: HTMLElement, dontBindEventsOnBody?: boolean | undefined);
+    constructor(renderer: THREE.Renderer, camera: THREE.Camera, domElement: HTMLElement, options?: InteractionManagerOptions);
     dispose: () => void;
     add: (object: THREE.Object3D, childNames?: string[]) => void;
     remove: (object: THREE.Object3D, childNames?: string[]) => void;
