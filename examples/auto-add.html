@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>THREE.Interactive Auto-Add Example</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0"
+    />
+    <link type="text/css" rel="stylesheet" href="css/main.css" />
+  </head>
+  <body>
+    <div id="container"></div>
+
+    <div id="title">
+      <h1>THREE.Interactive Auto-Add Example</h1>
+      <p>
+       When the autoAdd option is used, there is need for adding objects to InteractionManager manually and calling interactionManager.update();
+      </p>
+
+      <ul>
+        <li><a href="./index.html">« Index</a></li>
+      </ul>
+
+      <div class="log"></div>
+    </div>
+
+    <div id="info">
+      <a
+        href="https://github.com/markuslerner/THREE.Interactive"
+        target="_blank"
+        rel="noopener"
+        >Source</a
+      >
+    </div>
+
+    <script src="https://unpkg.com/stats.js@0.17.0/build/stats.min.js"></script>
+
+    <!-- Import maps polyfill -->
+    <!-- Remove this when import maps will be widely supported -->
+    <script
+      async
+      src="https://unpkg.com/es-module-shims@1.3.6/dist/es-module-shims.js"
+    ></script>
+
+    <script type="importmap">
+      {
+        "imports": {
+          "three": "https://unpkg.com/three@0.138.0/build/three.module.js",
+          "TrackballControls": "https://unpkg.com/three@0.138.0/examples/jsm/controls/TrackballControls.js"
+        }
+      }
+    </script>
+
+    <script type="module">
+      import * as THREE from 'three';
+      import { TrackballControls } from 'TrackballControls';
+
+      import { InteractionManager } from '../build/three.interactive.js';
+
+      const stats = new Stats();
+      stats.dom.style.left = 'auto';
+      stats.dom.style.right = '0';
+      stats.dom.style.top = 'auto';
+      stats.dom.style.bottom = '0';
+      document.body.appendChild(stats.dom);
+
+      const renderer = new THREE.WebGLRenderer({
+        alpha: true,
+        antialias: true,
+      });
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      document.getElementById('container').appendChild(renderer.domElement);
+
+      const scene = new THREE.Scene();
+
+      const camera = new THREE.PerspectiveCamera(
+        45,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      camera.position.set(0.0, 0.0, 10.0);
+
+      const controls = new TrackballControls(camera, renderer.domElement);
+      controls.enableDamping = true;
+      controls.dampingFactor = 0.12;
+      controls.minDistance = 0.1;
+      controls.maxDistance = 10000;
+      controls.target.set(0, 0, 0);
+      controls.update();
+
+      const interactionManager = new InteractionManager(
+        renderer,
+        camera,
+        renderer.domElement,
+        {
+          autoAdd: true,
+          scene
+        }
+      );
+
+      const geometry = new THREE.BoxGeometry(2, 2, 2);
+
+      const group = new THREE.Group();
+      scene.add(group);
+
+      const box1 = new THREE.Mesh(
+        geometry,
+        new THREE.MeshBasicMaterial({ color: 0x000000 })
+      );
+      box1.name = 'box1';
+      box1.rotation.y = -0.2;
+      box1.defaultColor = box1.material.color.getHex();
+      box1.position.x = 0;
+      box1.position.z = 0;
+      group.add(box1);
+
+      const box2 = new THREE.Mesh(
+        geometry,
+        new THREE.MeshBasicMaterial({ color: 0x666666 })
+      );
+      box2.name = 'box2';
+      box2.rotation.y = 0.2;
+      box2.defaultColor = box2.material.color.getHex();
+      box2.position.x = 1;
+      box2.position.y = 1;
+      box2.position.z = -4;
+      group.add(box2);
+
+      group.children.forEach((child) => {
+        child.addEventListener('mouseenter', (event) => {
+          console.log(event);
+          event.stopPropagation();
+
+          document.querySelector('#title .log').innerHTML +=
+            '<span style="color: #ff8800">' +
+            event.target.name +
+            ' – mouseenter, distance: ' +
+            event.distance +
+            '</span><br/>';
+
+          event.target.material.color.set(0xff8800);
+
+          document.body.style.cursor = 'pointer';
+        });
+
+        child.addEventListener('mouseleave', (event) => {
+          console.log(event);
+
+          event.target.material.color.set(event.target.defaultColor);
+
+          document.body.style.cursor = 'default';
+        });
+
+        child.addEventListener('mouseover', (event) => {
+          console.log(event);
+          event.stopPropagation();
+
+          document.querySelector('#title .log').innerHTML +=
+            '<span style="color: #ff0000">' +
+            event.target.name +
+            ' – mouseover, distance: ' +
+            event.distance +
+            '</span><br/>';
+
+          event.target.material.color.set(0xff0000);
+
+          document.body.style.cursor = 'pointer';
+        });
+        child.addEventListener('mouseout', (event) => {
+          console.log(event);
+
+          event.target.material.color.set(event.target.defaultColor);
+
+          document.body.style.cursor = 'default';
+        });
+        child.addEventListener('mousedown', (event) => {
+          console.log(event);
+          event.stopPropagation();
+
+          document.querySelector('#title .log').innerHTML +=
+            '<span style="color: #0000ff">' +
+            event.target.name +
+            ' – mousedown, distance: ' +
+            event.distance +
+            '</span><br/>';
+
+          event.target.material.color.set(0x0000ff);
+        });
+        child.addEventListener('mouseup', (event) => {
+          console.log(event);
+
+          if (event.intersected) {
+            event.target.material.color.set(0xff0000);
+          } else {
+            event.target.material.color.set(0x000000);
+          }
+        });
+        child.addEventListener('click', (event) => {
+          console.log(event);
+          event.stopPropagation();
+
+          document.querySelector('#title .log').innerHTML +=
+            event.target.name +
+            ' – click, distance: ' +
+            event.distance +
+            '<br/>';
+        });
+      });
+
+      const animate = (time) => {
+        requestAnimationFrame(animate);
+
+        controls.update();
+
+        renderer.render(scene, camera);
+
+        stats.update();
+      };
+
+      animate();
+
+      window.addEventListener('resize', handleWindowResize, false);
+
+      function handleWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+    </script>
+  </body>
+</html>

@@ -39,6 +39,8 @@ export class InteractionManager {
   camera: THREE.Camera;
   domElement: HTMLElement;
   bindEventsOnBodyElement: boolean;
+  autoAdd: boolean;
+  scene: THREE.Scene | null;
   mouse: Vector2;
   supportsPointerEvents: boolean;
   interactiveObjects: InteractiveObject[];
@@ -51,14 +53,52 @@ export class InteractionManager {
     renderer: THREE.Renderer,
     camera: THREE.Camera,
     domElement: HTMLElement,
-    dontBindEventsOnBody?: boolean | undefined
+    options: {
+      dontBindEventsOnBody?: boolean | undefined;
+      autoAdd?: boolean | undefined;
+      scene?: THREE.Scene | undefined;
+    }
   ) {
     this.renderer = renderer;
     this.camera = camera;
     this.domElement = domElement;
     this.bindEventsOnBodyElement = true;
-    if (typeof dontBindEventsOnBody !== 'undefined' && dontBindEventsOnBody) {
+    if (
+      options &&
+      typeof options.dontBindEventsOnBody !== 'undefined' &&
+      options.dontBindEventsOnBody
+    ) {
       this.bindEventsOnBodyElement = false;
+    }
+    this.scene = null;
+    if (options && typeof options.scene !== 'undefined') {
+      this.scene = options.scene;
+      this.scene.onBeforeRender = () => {
+        if (this.autoAdd && this.scene !== null) {
+          this.scene.traverse((object) => {
+            if (!object.isScene) {
+              if (!this.interactiveObjects.find((i) => i.target === object)) {
+                this.add(object);
+
+                object.addEventListener('removed', (o) => {
+                  this.remove(o.target);
+                });
+              }
+            }
+          });
+        }
+
+        this.update();
+      };
+    }
+    this.autoAdd = false;
+    if (options && typeof options.autoAdd !== 'undefined') {
+      this.autoAdd = options.autoAdd;
+      if (this.autoAdd && this.scene === null) {
+        console.error(
+          'Attention: Options.scene needs to be set when using options.autoAdd'
+        );
+      }
     }
 
     this.mouse = new Vector2(-1, 1); // top left default position
@@ -175,8 +215,6 @@ export class InteractionManager {
 
   update = () => {
     this.raycaster.setFromCamera(this.mouse, this.camera);
-
-    // console.log( scene.children );
 
     this.interactiveObjects.forEach((object) => {
       if (object.target) this.checkIntersection(object);
