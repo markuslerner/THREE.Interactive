@@ -140,7 +140,7 @@ animate();
 
 #### InteractionManager class
 
-`new InteractionManager(renderer, camera, renderer.domElement [, { autoAdd: false, scene, bindEventsOnBodyElement: true } ])` – constructor InteractionManager instance; if the autoAdd option (still beta) is used, there is need for adding objects to InteractionManager manually and calling interactionManager.update();
+`new InteractionManager(renderer, camera, renderer.domElement [, { autoAdd: false, scene, bindEventsOnBodyElement: true } ])` – constructor InteractionManager instance; if the autoAdd option (still beta) is used, there is no need for adding objects to InteractionManager manually and calling interactionManager.update(); In this mode, the scene needs to be provided in the options.
 
 **Members:**
 
