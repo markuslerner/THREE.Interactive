@@ -187,7 +187,7 @@ yarn start
 
 And open http://127.0.0.1:8000/ in your browers.
 
-The files in the `build` folder will automatically be rebuilt when modified.
+The files in the `build` folder will automatically be rebuilt when the files in the `src` folder are modified.
 
 ### License
 
