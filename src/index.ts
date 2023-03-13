@@ -84,21 +84,17 @@ export class InteractionManager {
         ? options.bindEventsOnBodyElement
         : true;
 
-    console.log(this.bindEventsOnBodyElement);
-
     this.scene =
       options && typeof options.scene !== 'undefined' ? options.scene : null;
     if (this.scene) {
       this.scene.onBeforeRender = () => {
         if (this.autoAdd && this.scene !== null) {
           this.scene.traverse((object) => {
-            if (!object.isScene) {
-              this.add(object);
+            this.add(object);
 
-              object.addEventListener('removed', (o) => {
-                this.remove(o.target);
-              });
-            }
+            object.addEventListener('removed', (o) => {
+              this.remove(o.target);
+            });
           });
         }
 
