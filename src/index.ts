@@ -93,13 +93,11 @@ export class InteractionManager {
         if (this.autoAdd && this.scene !== null) {
           this.scene.traverse((object) => {
             if (!object.isScene) {
-              if (!this.interactiveObjects.find((i) => i.target === object)) {
-                this.add(object);
+              this.add(object);
 
-                object.addEventListener('removed', (o) => {
-                  this.remove(o.target);
-                });
-              }
+              object.addEventListener('removed', (o) => {
+                this.remove(o.target);
+              });
             }
           });
         }
@@ -203,7 +201,7 @@ export class InteractionManager {
   };
 
   add = (object: THREE.Object3D, childNames: string[] = []) => {
-    if (object) {
+    if (object && !this.interactiveObjects.find((i) => i.target === object)) {
       if (childNames.length > 0) {
         childNames.forEach((name) => {
           const o = object.getObjectByName(name);
