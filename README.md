@@ -23,6 +23,7 @@ Collaborations and improvements are welcome.
 ### Examples
 
 - [Simple](https://dev.markuslerner.com/three.interactive/examples/simple.html): Basic example
+- [Auto Add](https://dev.markuslerner.com/three.interactive/examples/auto-add.html): Auto-add example, still beta
 - [Depth](https://dev.markuslerner.com/three.interactive/examples/depth.html): Overlapping objects example
 - [glTF](https://dev.markuslerner.com/three.interactive/examples/gltf.html): Hover/click gltf objects example
 
@@ -139,7 +140,7 @@ animate();
 
 #### InteractionManager class
 
-`new InteractionManager(renderer, camera, renderer.domElement [, { autoAdd: false, scene, bindEventsOnBodyElement: true } ])` – constructor InteractionManager instance
+`new InteractionManager(renderer, camera, renderer.domElement [, { autoAdd: false, scene, bindEventsOnBodyElement: true } ])` – constructor InteractionManager instance; if the autoAdd option (still beta) is used, there is need for adding objects to InteractionManager manually and calling interactionManager.update();
 
 **Members:**
 
