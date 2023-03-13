@@ -139,7 +139,7 @@ animate();
 
 #### InteractionManager class
 
-`new InteractionManager(renderer, camera, renderer.domElement [, dontBindEventsOnBody])` – constructor InteractionManager instance
+`new InteractionManager(renderer, camera, renderer.domElement [, { autoAdd: false, scene, bindEventsOnBodyElement: true } ])` – constructor InteractionManager instance
 
 **Members:**
 
@@ -154,6 +154,10 @@ animate();
 `interactionManager.update()` – update InteractionManager on each render
 
 `interactionManager.dispose()` – dispose InteractionManager
+
+#### InteractionManagerOptions class
+
+`new InteractionManagerOptions({ autoAdd: false, scene, bindEventsOnBodyElement: true })` – constructor InteractionManagerOptions instance
 
 #### InteractiveEvent class
 

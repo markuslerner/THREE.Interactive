@@ -34,6 +34,28 @@ export class InteractiveEvent {
   }
 }
 
+export class InteractionManagerOptions {
+  bindEventsOnBodyElement: boolean = true;
+  autoAdd: boolean = false;
+  scene: THREE.Scene | null = null;
+
+  constructor(options: {
+    bindEventsOnBodyElement?: boolean | undefined;
+    autoAdd?: boolean | undefined;
+    scene?: THREE.Scene | undefined;
+  }) {
+    if (options && typeof options.bindEventsOnBodyElement !== 'undefined') {
+      this.bindEventsOnBodyElement = options.bindEventsOnBodyElement;
+    }
+    if (options && typeof options.scene !== 'undefined') {
+      this.scene = options.scene;
+    }
+    if (options && typeof options.autoAdd !== 'undefined') {
+      this.autoAdd = options.autoAdd;
+    }
+  }
+}
+
 export class InteractionManager {
   renderer: THREE.Renderer;
   camera: THREE.Camera;
@@ -46,33 +68,27 @@ export class InteractionManager {
   interactiveObjects: InteractiveObject[];
   closestObject: InteractiveObject | null;
   raycaster: THREE.Raycaster;
-
   treatTouchEventsAsMouseEvents: boolean;
 
   constructor(
     renderer: THREE.Renderer,
     camera: THREE.Camera,
     domElement: HTMLElement,
-    options: {
-      dontBindEventsOnBody?: boolean | undefined;
-      autoAdd?: boolean | undefined;
-      scene?: THREE.Scene | undefined;
-    }
+    options?: InteractionManagerOptions
   ) {
     this.renderer = renderer;
     this.camera = camera;
     this.domElement = domElement;
-    this.bindEventsOnBodyElement = true;
-    if (
-      options &&
-      typeof options.dontBindEventsOnBody !== 'undefined' &&
-      options.dontBindEventsOnBody
-    ) {
-      this.bindEventsOnBodyElement = false;
-    }
-    this.scene = null;
-    if (options && typeof options.scene !== 'undefined') {
-      this.scene = options.scene;
+    this.bindEventsOnBodyElement =
+      options && typeof options.bindEventsOnBodyElement !== 'undefined'
+        ? options.bindEventsOnBodyElement
+        : true;
+
+    console.log(this.bindEventsOnBodyElement);
+
+    this.scene =
+      options && typeof options.scene !== 'undefined' ? options.scene : null;
+    if (this.scene) {
       this.scene.onBeforeRender = () => {
         if (this.autoAdd && this.scene !== null) {
           this.scene.traverse((object) => {
@@ -91,14 +107,15 @@ export class InteractionManager {
         this.update();
       };
     }
-    this.autoAdd = false;
-    if (options && typeof options.autoAdd !== 'undefined') {
-      this.autoAdd = options.autoAdd;
-      if (this.autoAdd && this.scene === null) {
-        console.error(
-          'Attention: Options.scene needs to be set when using options.autoAdd'
-        );
-      }
+    this.autoAdd =
+      options && typeof options.autoAdd !== 'undefined'
+        ? options.autoAdd
+        : false;
+
+    if (this.autoAdd && this.scene === null) {
+      console.error(
+        'Attention: Options.scene needs to be set when using options.autoAdd'
+      );
     }
 
     this.mouse = new Vector2(-1, 1); // top left default position
