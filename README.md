@@ -148,9 +148,9 @@ animate();
 
 **Methods:**
 
-`interactionManager.add(object, childNames = [])` – add object(s), optionally select only child objects by names
+`interactionManager.add(object, childNames = [])` – add object(s), optionally select only children of `object` by their names
 
-`interactionManager.remove(object, childNames = [])` – remove object(s)
+`interactionManager.remove(object, childNames = [])` – remove object(s), optionally select only children of `object` by their names
 
 `interactionManager.update()` – update InteractionManager on each render
 
