@@ -1,6 +1,6 @@
 {
   "name": "three.interactive",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "Fast and simple interaction manager for THREE.js",
   "type": "module",
   "types": "./build/index.d.ts",

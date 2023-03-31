@@ -215,13 +215,21 @@ export class InteractionManager {
 
   remove = (object: THREE.Object3D, childNames: string[] = []) => {
     if (!object) return;
-    const filterSet = new Set<string>(
-      childNames.length > 0 ? childNames : [object.name]
-    );
 
-    this.interactiveObjects = this.interactiveObjects.filter(
-      (o) => !filterSet.has(o.name)
-    );
+    if (childNames.length > 0) {
+      childNames.forEach((name) => {
+        const child = object.getObjectByName(name);
+        if (child) {
+          this.interactiveObjects = this.interactiveObjects.filter(
+            (o) => o.target !== child
+          );
+        }
+      });
+    } else {
+      this.interactiveObjects = this.interactiveObjects.filter(
+        (o) => o.target !== object
+      );
+    }
   };
 
   update = () => {
