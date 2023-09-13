@@ -8,7 +8,7 @@ _Note: When using ReactJS I can highly recommend [react-three-fiber](https://git
 
 _ESM only. Currently no CJS version is built._
 
-### Hot it works:
+### How it works:
 
 - Interactive Objects (THREE.Object3D) are added to the InteractionManager, which fires instances of InteractiveEvent.
 
