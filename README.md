@@ -140,47 +140,50 @@ animate();
 
 #### InteractionManager class
 
-`new InteractionManager(renderer, camera, renderer.domElement [, { autoAdd: false, scene, bindEventsOnBodyElement: true } ])` – constructor InteractionManager instance; if the autoAdd option (still beta) is used, there is no need for adding objects to InteractionManager manually and calling interactionManager.update(); In this mode, the scene needs to be provided in the options.
+`new InteractionManager(renderer, camera, renderer.domElement [, { autoAdd: false, scene, bindEventsOnBodyElement: true } ])`
+
+Constructor of InteractionManager instance; if the autoAdd option (still beta) is used, there is no need for adding objects to InteractionManager manually and calling interactionManager.update(); In this mode, the scene needs to be provided in the options.
 
 **Members:**
 
-`treatTouchEventsAsMouseEvents` (boolean) – wether touch events should fire as mouse events, default: true
+Member | Type | Default | Description
+:----- | :--- | :------ | :----------
+`treatTouchEventsAsMouseEvents` | boolean | true | Whether touch events should fire as mouse events
 
 **Methods:**
 
-`interactionManager.add(object, childNames = [])` – add object(s), optionally select only children of `object` by their names
-
-`interactionManager.remove(object, childNames = [])` – remove object(s), optionally select only children of `object` by their names
-
-`interactionManager.update()` – update InteractionManager on each render
-
-`interactionManager.dispose()` – dispose InteractionManager
+Method | Description
+:----- | :----------
+`add(object, childNames = [])` | Add object(s), optionally select only children of `object` by their names
+`remove(object, childNames = [])` | Remove object(s), optionally select only children of `object` by their names
+`update()` | Update InteractionManager on each render
+`dispose()` | Dispose InteractionManager
 
 #### InteractionManagerOptions class
 
-`new InteractionManagerOptions({ autoAdd: false, scene, bindEventsOnBodyElement: true })` – constructor InteractionManagerOptions instance
+`new InteractionManagerOptions({ autoAdd: false, scene, bindEventsOnBodyElement: true })`
+
+Constructor of InteractionManagerOptions instance
 
 #### InteractiveEvent class
 
 **Members:**
 
-`cancelBubble` (boolean) – wether events should continue to bubble, default: false
-
-`coords` (THREE.Vector2) – Mouse/touch coords
-
-`distance` (number) – Distance of intersected point from camera
-
-`intersected` (boolean) – Whether object is still intersected
-
-`originalEvent` (Event object) – Original event, if available (MouseEvent, TouchEvent or PointerEvent)
-
-`target` (THREE.Object3D) – Target object
-
-`type` (string) – event type: 'click', 'mouseover', 'mouseout', 'mouseenter', 'mouseleave', 'mousedown', 'mousemove', 'mouseup', 'touchstart', 'touchmove', 'touchend', 'pointerdown', 'pointerup', 'pointermove'
+Member | Type | Default | Description
+:----- | :--- | :------ | :----------
+`cancelBubble` | boolean | false | Whether events should continue to bubble
+`coords` | THREE.Vector2 | | Mouse/touch coords
+`distance` | Number | | Distance of intersected point from camera
+`intersected` | boolean | | Whether object is still intersected
+`originalEvent` | Event object | | Original event, if available (MouseEvent, TouchEvent or PointerEvent)
+`target` | THREE.Object3D | | Target object
+`type` | string | |event type: 'click', 'mouseover', 'mouseout', 'mouseenter', 'mouseleave', 'mousedown', 'mousemove', 'mouseup', 'touchstart', 'touchmove', 'touchend', 'pointerdown', 'pointerup', 'pointermove'
 
 **Methods:**
 
-`stopPropagation` – stop bubbling of event (cancelBubble), e.g. when only the object closest to the camera is supposed to fire an event
+Method | Description
+:----- | :----------
+`stopPropagation` | Stop bubbling of event (cancelBubble), e.g. when only the object closest to the camera is supposed to fire an event
 
 ### Editing source
 
