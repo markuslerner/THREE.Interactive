@@ -4,6 +4,7 @@ export declare class InteractiveObject {
     name: string;
     intersected: boolean;
     wasIntersected: boolean;
+    wasIntersectedOnMouseDown: boolean;
     distance: number;
     constructor(target: THREE.Object3D, name: string);
 }
@@ -14,6 +15,8 @@ export declare class InteractiveEvent {
     coords: Vector2;
     distance: number;
     intersected: boolean;
+    wasIntersected: boolean;
+    wasIntersectedOnMouseDown: boolean;
     constructor(type: string, originalEvent?: Event | null);
     stopPropagation(): void;
 }

@@ -146,18 +146,18 @@ Constructor of InteractionManager instance; if the autoAdd option (still beta) i
 
 **Members:**
 
-Member | Type | Default | Description
-:----- | :--- | :------ | :----------
-`treatTouchEventsAsMouseEvents` | boolean | true | Whether touch events should fire as mouse events
+| Member                          | Type    |  Default |  Description                                     |
+| :------------------------------ | :------ | :------- | :----------------------------------------------- |
+| `treatTouchEventsAsMouseEvents` | boolean | true     | Whether touch events should fire as mouse events |
 
 **Methods:**
 
-Method | Description
-:----- | :----------
-`add(object, childNames = [])` | Add object(s), optionally select only children of `object` by their names
-`remove(object, childNames = [])` | Remove object(s), optionally select only children of `object` by their names
-`update()` | Update InteractionManager on each render
-`dispose()` | Dispose InteractionManager
+| Method                            | Description                                                                  |
+| :-------------------------------- | :--------------------------------------------------------------------------- |
+| `add(object, childNames = [])`    | Add object(s), optionally select only children of `object` by their names    |
+| `remove(object, childNames = [])` | Remove object(s), optionally select only children of `object` by their names |
+| `update()`                        | Update InteractionManager on each render                                     |
+| `dispose()`                       | Dispose InteractionManager                                                   |
 
 #### InteractionManagerOptions class
 
@@ -169,21 +169,23 @@ Constructor of InteractionManagerOptions instance
 
 **Members:**
 
-Member | Type | Default | Description
-:----- | :--- | :------ | :----------
-`cancelBubble` | boolean | false | Whether events should continue to bubble
-`coords` | THREE.Vector2 | | Mouse/touch coords
-`distance` | Number | | Distance of intersected point from camera
-`intersected` | boolean | | Whether object is still intersected
-`originalEvent` | Event object | | Original event, if available (MouseEvent, TouchEvent or PointerEvent)
-`target` | THREE.Object3D | | Target object
-`type` | string | |event type: 'click', 'mouseover', 'mouseout', 'mouseenter', 'mouseleave', 'mousedown', 'mousemove', 'mouseup', 'touchstart', 'touchmove', 'touchend', 'pointerdown', 'pointerup', 'pointermove'
+| Member                      | Type           |  Default |  Description                                                                                                                                                                                    |
+| :-------------------------- | :------------- | :------- | :---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cancelBubble`              | boolean        | false    | Whether events should continue to bubble                                                                                                                                                        |
+| `coords`                    | THREE.Vector2  |          | Mouse/touch coords                                                                                                                                                                              |
+| `distance`                  | Number         |          | Distance of intersected point from camera                                                                                                                                                       |
+| `intersected`               | boolean        |          | Whether object is still intersected                                                                                                                                                             |
+| `wasIntersected`            | boolean        |          | Whether object was intersected during the last event or last render                                                                                                                             |
+| `wasIntersectedOnMouseDown` | boolean        |          | Whether object was intersected during mousedown event                                                                                                                                           |
+| `originalEvent`             | Event object   |          | Original event, if available (MouseEvent, TouchEvent or PointerEvent)                                                                                                                           |
+| `target`                    | THREE.Object3D |          | Target object                                                                                                                                                                                   |
+| `type`                      | string         |          | event type: 'click', 'mouseover', 'mouseout', 'mouseenter', 'mouseleave', 'mousedown', 'mousemove', 'mouseup', 'touchstart', 'touchmove', 'touchend', 'pointerdown', 'pointerup', 'pointermove' |
 
 **Methods:**
 
-Method | Description
-:----- | :----------
-`stopPropagation` | Stop bubbling of event (cancelBubble), e.g. when only the object closest to the camera is supposed to fire an event
+| Method            | Description                                                                                                         |
+| :---------------- | :------------------------------------------------------------------------------------------------------------------ |
+| `stopPropagation` | Stop bubbling of event (cancelBubble), e.g. when only the object closest to the camera is supposed to fire an event |
 
 ### Editing source
 

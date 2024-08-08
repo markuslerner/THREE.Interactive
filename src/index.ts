@@ -5,6 +5,7 @@ export class InteractiveObject {
   name: string;
   intersected: boolean;
   wasIntersected: boolean = false;
+  wasIntersectedOnMouseDown: boolean = false;
   distance: number;
   constructor(target: THREE.Object3D, name: string) {
     this.target = target;
@@ -23,6 +24,8 @@ export class InteractiveEvent {
   coords: Vector2 = new Vector2(0, 0);
   distance: number = 0;
   intersected: boolean = false;
+  wasIntersected: boolean = false;
+  wasIntersectedOnMouseDown: boolean = false;
 
   constructor(type: string, originalEvent: Event | null = null) {
     this.cancelBubble = false;
@@ -366,7 +369,10 @@ export class InteractionManager {
 
     this.interactiveObjects.forEach((object) => {
       if (object.intersected) {
+        object.wasIntersectedOnMouseDown = true;
         this.dispatch(object, event);
+      } else {
+        object.wasIntersectedOnMouseDown = false;
       }
     });
   };
@@ -454,6 +460,8 @@ export class InteractionManager {
       event.coords = this.mouse;
       event.distance = object.distance;
       event.intersected = object.intersected;
+      event.wasIntersected = object.wasIntersected;
+      event.wasIntersectedOnMouseDown = object.wasIntersectedOnMouseDown;
       object.target.dispatchEvent(event);
     }
   };
