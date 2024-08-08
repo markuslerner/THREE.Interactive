@@ -119,6 +119,14 @@ cube.addEventListener('mouseout', (event) => {
 cube.addEventListener('mousedown', (event) => {
   event.target.scale.set(1.1, 1.1, 1.1);
 });
+cube.addEventListener('mouseup', (event) => {
+  event.target.scale.set(1.1, 1.1, 1.1);
+  if (event.wasIntersectedOnMouseDown) {
+    // Object was intersected when mouse down fired, so this is essentially a click event
+  } else {
+    // Object was not intersected when mouse down fired
+  }
+});
 cube.addEventListener('click', (event) => {
   event.target.scale.set(1.0, 1.0, 1.0);
 });
